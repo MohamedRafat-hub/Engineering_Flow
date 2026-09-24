@@ -1,28 +1,16 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/widgets/app_button.dart';
+import 'auth_card.dart';
 import 'auth_text_filed.dart';
 import 'remember_me_row.dart';
-import 'sign_in_button.dart';
 
 class LoginFormCard extends StatelessWidget {
   const LoginFormCard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(14),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x0F1E3A8A),
-            blurRadius: 20,
-            offset: Offset(0, 6),
-          ),
-        ],
-      ),
+    return AuthCard(
       child: Column(
         children: [
           const AuthTextField(
@@ -45,7 +33,12 @@ class LoginFormCard extends StatelessWidget {
           const SizedBox(height: 14),
           const RememberMeRow(),
           const SizedBox(height: 20),
-          const SignInButton(),
+          AppButton(
+            label: 'Sign In',
+            trailingIcon: Icons.arrow_forward,
+            onPressed: () {
+            }, // TODO(logic): submit login
+          ),
         ],
       ),
     );

@@ -130,4 +130,30 @@ abstract final class AppTextStyles {
     color: AppColors.link,
     height: 1.5,
   );
+
+  static const TextStyle cardTitle = TextStyle(
+    fontSize: 12.5,
+    fontWeight: FontWeight.w700,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle sectionLabel = TextStyle(
+    fontSize: 10,
+    fontWeight: FontWeight.w600,
+    letterSpacing: 0.8,
+    color: AppColors.textSecondary,
+  );
+
+  static const TextStyle fieldValue = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+    color: AppColors.textPrimary,
+    height: 1.35,
+  );
+
+  static const TextStyle statusPill = TextStyle(
+    fontSize: 11,
+    fontWeight: FontWeight.w600,
+    color: AppColors.danger,
+  );
 }
