@@ -72,4 +72,62 @@ abstract final class AppTextStyles {
     color: AppColors.textSecondary,
     height: 1.5,
   );
+
+  static const TextStyle appBarTitle = TextStyle(
+    fontSize: 17,
+    fontWeight: FontWeight.w700,
+    color: AppColors.primary,
+  );
+
+  static const TextStyle helper = TextStyle(
+    fontSize: 11.5,
+    fontWeight: FontWeight.w400,
+    color: AppColors.textSecondary,
+    height: 1.4,
+  );
+
+  static const TextStyle backLink = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle supportBody = TextStyle(
+    fontSize: 13,
+    fontWeight: FontWeight.w400,
+    color: AppColors.textSecondary,
+    height: 1.5,
+  );
+
+  static const TextStyle supportLink = TextStyle(
+    fontSize: 13,
+    fontWeight: FontWeight.w500,
+    color: AppColors.link,
+    height: 1.5,
+  );
+
+  static const TextStyle emailChip = TextStyle(
+    fontSize: 13,
+    fontWeight: FontWeight.w600,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle prompt = TextStyle(
+    fontSize: 12.5,
+    fontWeight: FontWeight.w400,
+    color: AppColors.textSecondary,
+  );
+
+  static const TextStyle resendButton = TextStyle(
+    fontSize: 13,
+    fontWeight: FontWeight.w600,
+    color: AppColors.onPrimary,
+  );
+
+  static const TextStyle noticeLink = TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w700,
+    color: AppColors.link,
+    height: 1.5,
+  );
 }

@@ -3,4 +3,5 @@ abstract class AppAssets {
 
   static const String appLogo = 'assets/icons/engiflow_icon.svg';
   static const String keyIcon = 'assets/icons/key_icon.svg';
+  static const String mailIcon = 'assets/icons/email_icon.svg';
 }

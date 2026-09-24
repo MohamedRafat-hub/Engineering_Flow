@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../core/theme/app_text_styles.dart';
 
@@ -25,7 +26,9 @@ class RememberMeRow extends StatelessWidget {
           ],
         ),
         TextButton(
-          onPressed: () {}, // TODO(logic): navigate to forgot password
+          onPressed: () {
+            context.push('/forgot-password');
+          }, // TODO(logic): navigate to forgot password
           style: TextButton.styleFrom(
             padding: EdgeInsets.zero,
             minimumSize: Size.zero,
