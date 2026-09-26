@@ -4,8 +4,8 @@ import 'package:meta/meta.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit(super.initialState, LoginUseCase loginUseCase)
-    : _loginUseCase = loginUseCase;
+  AuthCubit( LoginUseCase loginUseCase)
+    : _loginUseCase = loginUseCase, super(AuthInitial());
 
   final LoginUseCase _loginUseCase;
 
