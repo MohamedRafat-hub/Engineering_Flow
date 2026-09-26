@@ -11,7 +11,7 @@ class AuthTextField extends StatelessWidget {
     required this.prefixIcon,
     this.suffixIcon,
     this.obscureText = false,
-    this.keyboardType,
+    this.keyboardType, this.onSaved, this.validator,
   });
 
   final String label;
@@ -20,6 +20,9 @@ class AuthTextField extends StatelessWidget {
   final Widget? suffixIcon;
   final bool obscureText;
   final TextInputType? keyboardType;
+  final Function(String?)? onSaved;
+  final  String? Function(String?)? validator;
+
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +42,10 @@ class AuthTextField extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8),
-        TextField(
+        TextFormField(
+          validator: validator,
+          maxLines: 1,
+          onSaved: onSaved,
           obscureText: obscureText,
           keyboardType: keyboardType,
           style: AppTextStyles.input,
