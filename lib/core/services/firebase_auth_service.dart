@@ -97,4 +97,51 @@ class FirebaseAuthService {
       );
     }
   }
+
+
+  Future<void> passwordReset(String email) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(
+        email: email,
+      );
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case 'invalid-email':
+          throw const AuthException(
+            'Please enter a valid email address.',
+          );
+
+        case 'user-not-found':
+          throw const AuthException(
+            'No account found with this email.',
+          );
+
+        case 'user-disabled':
+          throw const AuthException(
+            'This account has been disabled. Please contact support.',
+          );
+
+        case 'too-many-requests':
+          throw const AuthException(
+            'Too many requests. Please try again later.',
+          );
+
+        case 'operation-not-allowed':
+          throw const AuthException(
+            'Password reset is currently unavailable. Please try again later.',
+          );
+
+        case 'network-request-failed':
+          throw const NetworkException(
+            'Network error. Please check your internet connection.',
+          );
+
+        default:
+          throw const ServerException(
+            'Something went wrong. Please try again.',
+          );
+      }
+    }
+  }
+
 }

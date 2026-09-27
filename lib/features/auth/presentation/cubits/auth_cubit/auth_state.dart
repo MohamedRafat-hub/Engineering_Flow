@@ -12,3 +12,9 @@ final class AuthFailure extends AuthState {
 
   AuthFailure(this.message);
 }
+
+final class ResendCooldownChanged extends AuthState {
+  final int cooldown;
+
+  ResendCooldownChanged(this.cooldown);
+}

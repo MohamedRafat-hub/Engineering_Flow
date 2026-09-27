@@ -6,7 +6,8 @@ import 'profile_avatar_button.dart';
 
 class ForgotPasswordAppBar extends StatelessWidget
     implements PreferredSizeWidget {
-  const ForgotPasswordAppBar({super.key});
+  const ForgotPasswordAppBar({super.key, required this.hasLeading});
+  final bool hasLeading;
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -20,12 +21,12 @@ class ForgotPasswordAppBar extends StatelessWidget
       elevation: 0,
       scrolledUnderElevation: 0,
       shape: const Border(bottom: BorderSide(color: AppColors.noticeBorder)),
-      leading: IconButton(
+      leading:hasLeading ? IconButton(
         onPressed: () {
           Navigator.of(context).pop(); // TODO(logic): navigate back
         }, // TODO(logic): navigate back
-        icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-      ),
+        icon: const Icon(Icons.arrow_back, color: AppColors.primary),
+      ) : SizedBox(width: 8,),
       titleSpacing: 0,
       title: const AppBarBrand(),
       actions: const [

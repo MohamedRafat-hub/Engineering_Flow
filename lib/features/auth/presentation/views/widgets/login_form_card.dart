@@ -1,3 +1,4 @@
+import 'package:engineering_flow/features/auth/domain/use_cases/password_reset_use_case.dart';
 import 'package:engineering_flow/features/auth/presentation/views/widgets/password_field.dart';
 import 'package:engineering_flow/features/auth/presentation/views/widgets/remember_me_row.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,43 +27,51 @@ class _LoginFormCardState extends State<LoginFormCard> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => AuthCubit(
-        getIt.get<LoginUseCase>(),
-      ),
-      child: AuthCard(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              AuthTextField(
-                validator: validateEmail,
-                onSaved: (value) => email = value,
-                label: 'Email',
-                hintText: 'engineer@company.com',
-                prefixIcon: Icons.alternate_email,
-                keyboardType: TextInputType.emailAddress,
+    return AuthCard(
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            AuthTextField(
+              validator: validateEmail,
+              onSaved: (value) => email = value,
+              label: 'Email',
+              hintText: 'engineer@company.com',
+              prefixIcon: Icons.alternate_email,
+              keyboardType: TextInputType.emailAddress,
+            ),
+
+            const SizedBox(height: 16),
+
+            PasswordField(
+              onSaved: (value) => password = value,
+            ),
+
+            const SizedBox(height: 14),
+
+            BlocProvider(
+              create: (context) => AuthCubit(
+                  getIt.get<LoginUseCase>(),
+                  getIt.get<PasswordResetUseCase>()
               ),
+              child: RememberMeRow(),
+            ),
 
-              const SizedBox(height: 16),
+            const SizedBox(height: 20),
 
-              PasswordField(
-                onSaved: (value) => password = value,
-              ),
-
-              const SizedBox(height: 14),
-
-              const RememberMeRow(),
-
-              const SizedBox(height: 20),
-
-              LoginButton(
+            BlocProvider(
+              create: (context) =>
+                  AuthCubit(
+                      getIt.get<LoginUseCase>(),
+                      getIt.get<PasswordResetUseCase>()
+                  ),
+              child: LoginButton(
                 formKey: _formKey,
                 getEmail: () => email,
                 getPassword: () => password,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

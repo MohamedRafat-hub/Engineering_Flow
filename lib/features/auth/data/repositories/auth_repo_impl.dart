@@ -24,4 +24,16 @@ class AuthRepoImpl implements AuthRepo{
       return left(AuthFailure(e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> passwordReset({required String email})async {
+    try {
+      var result = await _authRemoteDataSource.passwordReset(email: email);
+      return right(result);
+    } on AuthException catch (e) {
+      return left(AuthFailure(e.message));
+    }catch (e) {
+      return left(AuthFailure(e.toString()));
+    }
+  }
  }

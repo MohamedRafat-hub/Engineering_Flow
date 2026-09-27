@@ -4,13 +4,18 @@ import 'package:flutter/material.dart';
 import 'widgets/forgot_password_app_bar.dart';
 
 class ResetEmailSentView extends StatelessWidget {
-  const ResetEmailSentView({super.key});
-
+  const ResetEmailSentView({super.key, required this.email});
+  final String email;
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: ForgotPasswordAppBar(),
-      body: SafeArea(child: ResetEmailSentViewBody()),
+
+    return  Scaffold(
+      appBar: ForgotPasswordAppBar(
+        hasLeading: false,
+      ),
+      body: SafeArea(child: ResetEmailSentViewBody(
+        email: email,
+      )),
     );
   }
 }

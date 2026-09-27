@@ -17,8 +17,13 @@ final GoRouter appRouter = GoRouter(
     ),
 
     GoRoute(
+
       path: '/reset_email_sent',
-      builder: (context, state) => const ResetEmailSentView(),
+      builder: (context, state) {
+        final email = state.extra as String;
+        return ResetEmailSentView(
+        email: email,
+      );},
     ),
 
     GoRoute(
