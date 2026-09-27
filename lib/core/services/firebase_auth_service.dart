@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:engineering_flow/core/errors/error_handling.dart';
 import 'package:engineering_flow/features/auth/data/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -27,68 +28,7 @@ class FirebaseAuthService {
       return UserModel.fromFirebaseUser(user);
     } on FirebaseAuthException catch (e) {
       log('Firebase Auth Error: ${e.code}');
-
-      switch (e.code) {
-        case 'invalid-email':
-          throw const AuthException(
-            'Please enter a valid email address.',
-          );
-
-        case 'user-disabled':
-          throw const AuthException(
-            'This account has been disabled. Please contact support.',
-          );
-
-        case 'user-not-found':
-          throw const AuthException(
-            'No account found with this email.',
-          );
-
-        case 'wrong-password':
-          throw const AuthException(
-            'Incorrect password. Please try again.',
-          );
-
-        case 'invalid-credential':
-          throw const AuthException(
-            'Incorrect email or password. Please try again.',
-          );
-
-        case 'email-already-in-use':
-          throw const AuthException(
-            'An account already exists with this email.',
-          );
-
-        case 'weak-password':
-          throw const AuthException(
-            'Your password is too weak. Please choose a stronger password.',
-          );
-
-        case 'operation-not-allowed':
-          throw const AuthException(
-            'This sign-in method is currently unavailable.',
-          );
-
-        case 'too-many-requests':
-          throw const AuthException(
-            'Too many attempts. Please try again later.',
-          );
-
-        case 'network-request-failed':
-          throw const AuthException(
-            'Network error. Please check your internet connection.',
-          );
-
-        case 'requires-recent-login':
-          throw const AuthException(
-            'Please sign in again to continue.',
-          );
-
-        default:
-          throw  AuthException(
-            'Something went wrong. Please try again.${e.message}',
-          );
-      }
+      throw ErrorHandling.handleAuthException(e);
     } catch (e) {
       log('Unexpected error: $e');
 
@@ -105,42 +45,7 @@ class FirebaseAuthService {
         email: email,
       );
     } on FirebaseAuthException catch (e) {
-      switch (e.code) {
-        case 'invalid-email':
-          throw const AuthException(
-            'Please enter a valid email address.',
-          );
-
-        case 'user-not-found':
-          throw const AuthException(
-            'No account found with this email.',
-          );
-
-        case 'user-disabled':
-          throw const AuthException(
-            'This account has been disabled. Please contact support.',
-          );
-
-        case 'too-many-requests':
-          throw const AuthException(
-            'Too many requests. Please try again later.',
-          );
-
-        case 'operation-not-allowed':
-          throw const AuthException(
-            'Password reset is currently unavailable. Please try again later.',
-          );
-
-        case 'network-request-failed':
-          throw const NetworkException(
-            'Network error. Please check your internet connection.',
-          );
-
-        default:
-          throw const ServerException(
-            'Something went wrong. Please try again.',
-          );
-      }
+      throw ErrorHandling.handleAuthException(e);
     }
   }
 
