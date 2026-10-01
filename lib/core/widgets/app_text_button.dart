@@ -9,6 +9,7 @@ class AppTextButton extends StatelessWidget {
     required this.label,
     required this.onPressed,
     this.leadingIcon,
+    this.trailingIcon,
     this.textStyle = AppTextStyles.link,
     this.dense = false,
   });
@@ -16,6 +17,7 @@ class AppTextButton extends StatelessWidget {
   final String label;
   final VoidCallback? onPressed;
   final IconData? leadingIcon;
+  final IconData? trailingIcon;
   final TextStyle textStyle;
 
   /// Removes padding and tap-target padding (for inline links).
@@ -41,6 +43,10 @@ class AppTextButton extends StatelessWidget {
             const SizedBox(width: 8),
           ],
           Text(label, style: textStyle),
+          if (trailingIcon != null) ...[
+            const SizedBox(width: 8),
+            Icon(trailingIcon, size: 16),
+          ],
         ],
       ),
     );

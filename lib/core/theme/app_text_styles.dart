@@ -156,4 +156,48 @@ abstract final class AppTextStyles {
     fontWeight: FontWeight.w600,
     color: AppColors.danger,
   );
+
+  static const TextStyle appBarEyebrow = TextStyle(
+    fontSize: 10.5,
+    fontWeight: FontWeight.w700,
+    letterSpacing: 1,
+    color: AppColors.textSecondary,
+  );
+
+  static const TextStyle appBarHeading = TextStyle(
+    fontSize: 19,
+    fontWeight: FontWeight.w800,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle sectionTitle = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w800,
+    color: AppColors.textPrimary,
+  );
+
+  /// Generic small "pill" text style (status pills, tags, on-dark notices)
+  /// parameterized by color so we don't need one constant per variant.
+  static TextStyle pill({
+    required Color color,
+    FontWeight weight = FontWeight.w600,
+    double size = 11,
+    double? height,
+  }) {
+    return TextStyle(
+      fontSize: size,
+      fontWeight: weight,
+      color: color,
+      height: height,
+    );
+  }
+
+  /// Bottom navigation label style for the active/inactive state.
+  static TextStyle navLabel({required bool active}) {
+    return TextStyle(
+      fontSize: 11,
+      fontWeight: active ? FontWeight.w700 : FontWeight.w500,
+      color: active ? AppColors.primary : AppColors.textSecondary,
+    );
+  }
 }

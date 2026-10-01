@@ -23,6 +23,10 @@ abstract final class AppColors {
 
   // Feedback
   static const Color required = Color(0xFFD32F2F);
+
+  // Dashboard-specific additions
+  static const Color primaryDeep = Color(0xFF14276B);
+  static const Color tagBackground = Color(0xFFE6E7F2);
   static const Color danger = Color(0xFFDC2626);
   static const Color dangerSurface = Color(0xFFFDE4E4);
   static const Color dangerGlowOuter = Color(0xFFFDE8E8);

@@ -1,3 +1,4 @@
+import 'package:engineering_flow/features/admin_workflow/presentation/views/dashboard_view.dart';
 import 'package:engineering_flow/features/auth/presentation/views/account_disabled_view.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/auth/presentation/views/forgot_password_view.dart';
@@ -5,7 +6,7 @@ import '../../features/auth/presentation/views/login_view.dart';
 import '../../features/auth/presentation/views/reset_email_sent_view.dart';
 
 final GoRouter appRouter = GoRouter(
-  initialLocation: '/login',
+  initialLocation: '/dashboard',
   routes: [
     GoRoute(
       path: '/login',
@@ -29,6 +30,11 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/account_disabled',
       builder: (context, state) => const AccountDisabledView(),
+    ),
+
+    GoRoute(
+      path: '/dashboard',
+      builder: (context, state) => const DashboardView(),
     ),
   ],
 );
