@@ -4,10 +4,7 @@ import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/theme/app_text_styles.dart';
 import '../../../../../core/widgets/initial_avatar.dart';
 import '../../../../../core/widgets/status_pill.dart';
-
-/// Presentational status of a user row — UI concern only (which pill to
-/// render), not a reflection of any domain/account model.
-enum UserActivityStatus { active, disabled }
+import '../../../../../core/widgets/user_status_pill.dart';
 
 class UserActivityTile extends StatelessWidget {
   const UserActivityTile({
@@ -23,12 +20,10 @@ class UserActivityTile extends StatelessWidget {
   final String name;
   final String role;
   final String tier;
-  final UserActivityStatus status;
+  final UserAccountStatus status;
 
   @override
   Widget build(BuildContext context) {
-    final bool isActive = status == UserActivityStatus.active;
-
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -67,17 +62,7 @@ class UserActivityTile extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 8),
-          StatusPill(
-            label: isActive ? 'Active' : 'Disabled',
-            dotColor: isActive ? AppColors.link : AppColors.textHint,
-            backgroundColor:
-            isActive ? AppColors.badgeBackground : AppColors.tagBackground,
-            textStyle: AppTextStyles.pill(
-              color: isActive ? AppColors.link : AppColors.textSecondary,
-              weight: FontWeight.w700,
-              size: 10.5,
-            ),
-          ),
+          UserStatusPill(status: status),
         ],
       ),
     );

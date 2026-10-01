@@ -79,18 +79,22 @@ class AppButton extends StatelessWidget {
 
   ButtonStyle _buildStyle() {
     ButtonStyle style = switch (variant) {
-      AppButtonVariant.primary => ElevatedButton.styleFrom(),
+      AppButtonVariant.primary =>
+          ElevatedButton.styleFrom(minimumSize: const Size(64, 48)),
       AppButtonVariant.tonal => ElevatedButton.styleFrom(
         backgroundColor: AppColors.badgeBackground,
         foregroundColor: AppColors.primary,
+        minimumSize: const Size(64, 48),
       ),
       AppButtonVariant.accent => ElevatedButton.styleFrom(
         backgroundColor: AppColors.secondary,
+        minimumSize: const Size(64, 48),
       ),
       AppButtonVariant.outline => ElevatedButton.styleFrom(
         backgroundColor: AppColors.surface,
         foregroundColor: AppColors.textPrimary,
         side: const BorderSide(color: AppColors.noticeBorder),
+        minimumSize: const Size(64, 48),
       ),
     };
 

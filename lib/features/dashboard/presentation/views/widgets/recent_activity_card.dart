@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../core/widgets/app_card.dart';
+import '../../../../../core/widgets/user_status_pill.dart';
 import 'manage_users_link.dart';
 import 'recent_activity_header.dart';
 import 'user_activity_tile.dart';
@@ -21,7 +22,7 @@ class RecentActivityCard extends StatelessWidget {
             name: 'Ahmed Mohamed',
             role: 'Project Manager',
             tier: 'Manager',
-            status: UserActivityStatus.active,
+            status: UserAccountStatus.active,
           ),
           const SizedBox(height: 10),
           const UserActivityTile(
@@ -29,7 +30,7 @@ class RecentActivityCard extends StatelessWidget {
             name: 'Mohamed Ali',
             role: 'Site Engineer',
             tier: 'Employee',
-            status: UserActivityStatus.active,
+            status: UserAccountStatus.active,
           ),
           const SizedBox(height: 10),
           const UserActivityTile(
@@ -37,7 +38,7 @@ class RecentActivityCard extends StatelessWidget {
             name: 'Omar Hassan',
             role: 'Structural Engineer',
             tier: 'Employee',
-            status: UserActivityStatus.disabled,
+            status: UserAccountStatus.disabled,
           ),
           const SizedBox(height: 14),
           const ManageUsersLink(),
