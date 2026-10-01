@@ -1,6 +1,7 @@
-import 'package:engineering_flow/features/admin_workflow/presentation/views/widgets/recent_activity_card.dart';
-import 'package:engineering_flow/features/admin_workflow/presentation/views/widgets/role_governence_notice.dart';
-import 'package:engineering_flow/features/admin_workflow/presentation/views/widgets/welcome_banner_card.dart';
+
+import 'package:engineering_flow/features/dashboard/presentation/views/widgets/recent_activity_card.dart';
+import 'package:engineering_flow/features/dashboard/presentation/views/widgets/role_governence_notice.dart';
+import 'package:engineering_flow/features/dashboard/presentation/views/widgets/welcome_banner_card.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/widgets/scrollable_centered_body.dart';
