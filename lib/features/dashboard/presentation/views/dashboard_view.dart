@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:engineering_flow/features/dashboard/presentation/views/widgets/dashboard_view_body.dart';
 import 'package:flutter/material.dart';
 
@@ -9,10 +11,9 @@ class DashboardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       appBar: MainAppBar(title: 'Dashboard'),
       body: SafeArea(child: DashboardViewBody()),
-      bottomNavigationBar: AppBottomNavBar(currentIndex: 0),
     );
   }
 }

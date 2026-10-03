@@ -9,7 +9,7 @@ import '../../../../../core/utils/helper_functions/validate_email.dart';
 import '../../../domain/use_cases/login_use_case.dart';
 import '../../cubits/auth_cubit/auth_cubit.dart';
 import 'auth_card.dart';
-import 'auth_text_filed.dart';
+import '../../../../../core/widgets/app_text_field.dart';
 import 'login_button.dart';
 
 class LoginFormCard extends StatefulWidget {
@@ -32,7 +32,7 @@ class _LoginFormCardState extends State<LoginFormCard> {
         key: _formKey,
         child: Column(
           children: [
-            AuthTextField(
+            AppTextField(
               validator: validateEmail,
               onSaved: (value) => email = value,
               label: 'Email',

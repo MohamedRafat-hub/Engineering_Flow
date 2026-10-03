@@ -8,7 +8,7 @@ import '../../../../../core/utils/helper_functions/validate_email.dart';
 import '../../../../../core/widgets/app_button.dart';
 import '../../cubits/auth_cubit/auth_cubit.dart';
 import 'auth_card.dart';
-import 'auth_text_filed.dart';
+import '../../../../../core/widgets/app_text_field.dart';
 import 'email_hint_text.dart';
 
 class ForgotPasswordFormCard extends StatelessWidget {
@@ -24,7 +24,7 @@ class ForgotPasswordFormCard extends StatelessWidget {
       child: AuthCard(
         child: Column(
           children: [
-            AuthTextField(
+            AppTextField(
               onSaved: (value) {
                 email = value;
               },

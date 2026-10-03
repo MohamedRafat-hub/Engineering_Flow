@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../core/utils/helper_functions/validate_password.dart';
-import 'auth_text_filed.dart';
+import '../../../../../core/widgets/app_text_field.dart';
 
 class PasswordField extends StatefulWidget {
   const PasswordField({
@@ -20,7 +20,7 @@ class _PasswordFieldState extends State<PasswordField> {
 
   @override
   Widget build(BuildContext context) {
-    return AuthTextField(
+    return AppTextField(
       validator: validatePassword,
       onSaved: widget.onSaved,
       label: 'Password',

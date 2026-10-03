@@ -12,7 +12,6 @@ class UsersView extends StatelessWidget {
     return const Scaffold(
       appBar: MainAppBar(title: 'Users'),
       body: UsersViewBody(), // Replace with UsersViewBody() when implemented
-      bottomNavigationBar: AppBottomNavBar(currentIndex: 1),
     );
   }
 }

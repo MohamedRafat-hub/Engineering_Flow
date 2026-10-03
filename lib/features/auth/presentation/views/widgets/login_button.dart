@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/utils/helper_functions/show_message.dart';
@@ -28,6 +29,7 @@ class LoginButton extends StatelessWidget {
             'Login success',
             AppColors.primary,
           );
+          context.go('/main_screen');
         } else if (state is AuthFailure) {
           showMessage(
             context,

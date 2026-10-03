@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/theme/app_colors.dart';
-import '../../../../../core/theme/app_text_styles.dart';
+import '../theme/app_colors.dart';
+import '../theme/app_text_styles.dart';
 
-class AuthTextField extends StatelessWidget {
-  const AuthTextField({
+class AppTextField extends StatelessWidget {
+  const AppTextField({
     super.key,
     required this.label,
     required this.hintText,
     required this.prefixIcon,
     this.suffixIcon,
     this.obscureText = false,
-    this.keyboardType, this.onSaved, this.validator,
+    this.keyboardType,
+    this.onSaved,
+    this.validator,
+    this.isRequired = false,
+    this.optionalLabel,
   });
 
   final String label;
@@ -21,26 +25,34 @@ class AuthTextField extends StatelessWidget {
   final bool obscureText;
   final TextInputType? keyboardType;
   final Function(String?)? onSaved;
-  final  String? Function(String?)? validator;
-
+  final String? Function(String?)? validator;
+  final bool isRequired;
+  final String? optionalLabel;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text.rich(
-          TextSpan(
+        RichText(
+          text: TextSpan(
             text: label,
             style: AppTextStyles.fieldLabel,
-            children: const [
-              TextSpan(
-                text: ' *',
-                style: TextStyle(color: AppColors.required),
-              ),
+            children: [
+              if (isRequired)
+                const TextSpan(
+                  text: ' *',
+                  style: TextStyle(color: AppColors.required),
+                ),
+              if (optionalLabel != null)
+                TextSpan(
+                  text: ' $optionalLabel',
+                  style: AppTextStyles.subtitle.copyWith(fontSize: 12),
+                ),
             ],
           ),
         ),
+        const SizedBox(height: 8),
         const SizedBox(height: 8),
         TextFormField(
           validator: validator,

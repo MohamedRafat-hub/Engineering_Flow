@@ -1,4 +1,6 @@
 import 'package:engineering_flow/features/auth/presentation/views/account_disabled_view.dart';
+import 'package:engineering_flow/features/main_screen.dart';
+import 'package:engineering_flow/features/users/presentation/views/craete_user_view.dart';
 import 'package:engineering_flow/features/users/presentation/views/users_view.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/auth/presentation/views/forgot_password_view.dart';
@@ -7,7 +9,7 @@ import '../../features/auth/presentation/views/reset_email_sent_view.dart';
 import '../../features/dashboard/presentation/views/dashboard_view.dart';
 
 final GoRouter appRouter = GoRouter(
-  initialLocation: '/users',
+  initialLocation: '/login',
   routes: [
     GoRoute(
       path: '/login',
@@ -41,6 +43,17 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/users',
       builder: (context, state) => const UsersView(),
+    ),
+
+    GoRoute(
+      path: '/create_user',
+      builder: (context, state) => const CreateUserScreen(),
+    ),
+
+
+    GoRoute(
+      path: '/main_screen',
+      builder: (context, state) => const MainScreen(),
     ),
   ],
 );
