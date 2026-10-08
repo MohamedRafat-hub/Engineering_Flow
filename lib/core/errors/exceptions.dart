@@ -15,3 +15,9 @@ class AuthException implements Exception {
 
   const AuthException(this.message);
 }
+
+class FirestoreException implements Exception {
+  final String message;
+
+  const FirestoreException(this.message);
+}

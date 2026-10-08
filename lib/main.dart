@@ -6,7 +6,7 @@ import 'core/routing/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'firebase_options.dart';
 
-void main()async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
@@ -14,6 +14,7 @@ void main()async {
   );
 
   setUp();
+
   runApp(const EngineeringFlowApp());
 }
 

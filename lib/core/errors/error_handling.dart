@@ -1,12 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'exceptions.dart';
 
 class ErrorHandling {
+  // ─────────────── Firebase Auth ───────────────
+
   static AuthException handleAuthException(FirebaseAuthException e) {
     switch (e.code) {
-    // ─────────────── Sign In ───────────────
-
       case 'invalid-credential':
         return AuthException(
           'The email or password is incorrect.',
@@ -32,8 +33,6 @@ class ErrorHandling {
           'Please enter a valid email address.',
         );
 
-    // ─────────────── Sign Up ───────────────
-
       case 'email-already-in-use':
         return AuthException(
           'An account already exists with this email.',
@@ -43,8 +42,6 @@ class ErrorHandling {
         return AuthException(
           'The password is too weak.',
         );
-
-    // ─────────────── General Auth ───────────────
 
       case 'operation-not-allowed':
         return AuthException(
@@ -67,21 +64,11 @@ class ErrorHandling {
         );
 
       case 'user-token-expired':
-        return AuthException(
-          'Your session has expired. Please sign in again.',
-        );
-
       case 'user-token-revoked':
-        return AuthException(
-          'Your session is no longer valid. Please sign in again.',
-        );
-
       case 'invalid-user-token':
         return AuthException(
           'Your session is no longer valid. Please sign in again.',
         );
-
-    // ─────────────── Email Verification ───────────────
 
       case 'email-already-verified':
         return AuthException(
@@ -92,8 +79,6 @@ class ErrorHandling {
         return AuthException(
           'The verification code is invalid or has expired.',
         );
-
-    // ─────────────── Credential / Provider ───────────────
 
       case 'credential-already-in-use':
         return AuthException(
@@ -115,8 +100,6 @@ class ErrorHandling {
           'The verification session is invalid. Please try again.',
         );
 
-    // ─────────────── Multi-Factor ───────────────
-
       case 'second-factor-already-in-use':
         return AuthException(
           'This second factor is already associated with an account.',
@@ -127,11 +110,102 @@ class ErrorHandling {
           'You have reached the maximum number of second factors.',
         );
 
-    // ─────────────── Fallback ───────────────
-
       default:
         return AuthException(
           'Something went wrong. Please try again later.',
+        );
+    }
+  }
+
+  // ─────────────── Firestore ───────────────
+
+  static FirestoreException handleFirestoreException(
+      FirebaseException e,
+      ) {
+    switch (e.code) {
+      case 'permission-denied':
+        return FirestoreException(
+          'You do not have permission to perform this operation.',
+        );
+
+      case 'not-found':
+        return FirestoreException(
+          'The requested data was not found.',
+        );
+
+      case 'already-exists':
+        return FirestoreException(
+          'This data already exists.',
+        );
+
+      case 'aborted':
+        return FirestoreException(
+          'The operation was aborted. Please try again.',
+        );
+
+      case 'cancelled':
+        return FirestoreException(
+          'The operation was cancelled.',
+        );
+
+      case 'deadline-exceeded':
+        return FirestoreException(
+          'The operation took too long. Please try again.',
+        );
+
+      case 'unavailable':
+        return FirestoreException(
+          'The service is temporarily unavailable. Please try again later.',
+        );
+
+      case 'resource-exhausted':
+        return FirestoreException(
+          'The service limit has been reached. Please try again later.',
+        );
+
+      case 'failed-precondition':
+        return FirestoreException(
+          'The operation cannot be completed in the current state.',
+        );
+
+      case 'invalid-argument':
+        return FirestoreException(
+          'Invalid data was provided.',
+        );
+
+      case 'unauthenticated':
+        return FirestoreException(
+          'Your session has expired. Please sign in again.',
+        );
+
+      case 'data-loss':
+        return FirestoreException(
+          'A data error occurred. Please try again.',
+        );
+
+      case 'internal':
+        return FirestoreException(
+          'An internal error occurred. Please try again later.',
+        );
+
+      case 'out-of-range':
+        return FirestoreException(
+          'The provided data is out of range.',
+        );
+
+      case 'unimplemented':
+        return FirestoreException(
+          'This operation is not supported.',
+        );
+
+      case 'unknown':
+        return FirestoreException(
+          'An unknown error occurred. Please try again.',
+        );
+
+      default:
+        return FirestoreException(
+          'Something went wrong while accessing the database.',
         );
     }
   }
