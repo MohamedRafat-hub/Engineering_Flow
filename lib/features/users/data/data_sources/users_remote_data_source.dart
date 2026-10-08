@@ -7,6 +7,7 @@ abstract class UsersRemoteDataSource {
   Future<String>createUser({required String email , required String password});
   Future<void> addUser({required Map<String, dynamic> userData , required String uid});
   Future<void> deleteUser({required String uid});
+  Future<List<Map<String , dynamic>>> getAllUsers({String? uid});
 }
 
 
@@ -30,5 +31,10 @@ class UsersRemoteDataSourceImpl implements UsersRemoteDataSource {
   @override
   Future<void> deleteUser({required String uid}) {
     return _databaseService.addData(path: 'users', data: {}, uid: uid);
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> getAllUsers({String? uid}) {
+    return _databaseService.getData(path: 'users', uid:  uid);
   }
 }

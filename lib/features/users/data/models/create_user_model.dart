@@ -1,5 +1,7 @@
 import 'package:engineering_flow/features/users/domain/entities/create_user_entity.dart';
 
+import '../../domain/enums/user_role.dart';
+
 class CreateUserModel extends CreateUserEntity {
   CreateUserModel({
     required super.name,
@@ -8,16 +10,18 @@ class CreateUserModel extends CreateUserEntity {
     required super.jobTitle,
     required super.isActive,
     required super.createdAt,
+    super.phoneNumber,
   });
 
   factory CreateUserModel.fromMap(Map<String, dynamic> map) {
     return CreateUserModel(
-      name: map['name'] ?? '',
-      email: map['email'] ?? '',
-      role: map['role'] ?? '',
-      jobTitle: map['jobTitle'] ?? '',
+      name: map['name'],
+      email: map['email'],
+      role: UserRole.values.byName(map['role']),
+      jobTitle: map['jobTitle'],
       isActive: map['isActive'] ?? false,
-      createdAt: map['createdAt'],
+      createdAt: DateTime.parse(map['createdAt']),
+      phoneNumber: map['phoneNumber'] ?? null,
     );
   }
 
@@ -30,5 +34,16 @@ class CreateUserModel extends CreateUserEntity {
       'isActive': userModel.isActive,
       'createdAt': userModel.createdAt,
     };
+  }
+
+  CreateUserEntity toEntity() {
+    return CreateUserEntity(
+      name: name,
+      email: email,
+      role: role,
+      jobTitle: jobTitle,
+      isActive: isActive,
+      createdAt: createdAt,
+    );
   }
 }

@@ -3,5 +3,10 @@ abstract class DatabaseService {
     required String path,
     required Map<String, dynamic> data,
     String? uid,
-  }); // General method
+  });
+
+  Future<List<Map<String, dynamic>>> getData({
+    required String path,
+    String? uid,
+  });// General method
 }

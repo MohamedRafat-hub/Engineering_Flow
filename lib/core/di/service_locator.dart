@@ -9,7 +9,9 @@ import 'package:engineering_flow/features/users/data/data_sources/users_remote_d
 import 'package:engineering_flow/features/users/data/repos/users_repo_impl.dart';
 import 'package:engineering_flow/features/users/domain/repos/users_repo.dart';
 import 'package:engineering_flow/features/users/domain/use_cases/create_user_account_use_case.dart';
+import 'package:engineering_flow/features/users/domain/use_cases/get_all_users_use_case.dart';
 import 'package:get_it/get_it.dart';
+import 'package:http/http.dart';
 import '../../features/auth/data/repositories/auth_repo_impl.dart';
 
 final getIt = GetIt.instance;
@@ -38,4 +40,6 @@ void setUp() {
 
 
   getIt.registerSingleton(CreateUserAccountUseCase(getIt.get<UsersRepo>()));
+
+  getIt.registerSingleton(GetAllUsersUseCase(getIt.get<UsersRepo>()));
 }

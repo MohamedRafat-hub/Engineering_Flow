@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:engineering_flow/core/theme/app_colors.dart';
 import 'package:engineering_flow/core/utils/helper_functions/show_message.dart';
+import 'package:engineering_flow/features/users/domain/enums/user_role.dart';
 import 'package:engineering_flow/features/users/domain/use_cases/create_user_account_use_case.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +15,6 @@ class CreateUserBlocBuilder extends StatelessWidget {
   const CreateUserBlocBuilder({
     super.key,
     required this.globalKey,
-    required this.roles,
     required int selectedRoleIndex,
     required this.phoneNumber,
     required this.nameController,
@@ -24,7 +24,6 @@ class CreateUserBlocBuilder extends StatelessWidget {
   }) : _selectedRoleIndex = selectedRoleIndex;
 
   final GlobalKey<FormState> globalKey;
-  final List<String> roles;
   final int _selectedRoleIndex;
   final String? phoneNumber;
 
@@ -60,7 +59,7 @@ class CreateUserBlocBuilder extends StatelessWidget {
                   CreateUserEntity createUserEntity = CreateUserEntity(
                     name: nameController.text,
                     email: emailController.text,
-                    role: roles[_selectedRoleIndex],
+                    role: _selectedRoleIndex == 0 ? UserRole.admin : _selectedRoleIndex == 1 ? UserRole.manager : UserRole.employee,
                     jobTitle: jobTitleController.text,
                     isActive: true,
                     phoneNumber: phoneNumber,

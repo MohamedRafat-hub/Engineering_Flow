@@ -161,7 +161,6 @@ class _CreateUserFormState extends State<CreateUserForm> {
                 UserCubit(getIt.get<CreateUserAccountUseCase>()),
             child: CreateUserBlocBuilder(
               globalKey: globalKey,
-              roles: roles,
               selectedRoleIndex: _selectedRoleIndex,
               phoneNumber: phoneNumber,
               nameController: nameController,

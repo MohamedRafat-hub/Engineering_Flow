@@ -1,3 +1,4 @@
+import 'package:engineering_flow/features/users/domain/entities/create_user_entity.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/theme/app_colors.dart';
@@ -14,34 +15,18 @@ import 'role_badge.dart';
 class UserListTile extends StatelessWidget {
   const UserListTile({
     super.key,
-    required this.initials,
-    required this.avatarBackgroundColor,
-    required this.avatarTextColor,
-    required this.name,
-    required this.roleTitle,
-    required this.email,
-    required this.role,
-    required this.status,
-    required this.trailing,
     this.tag,
+    required this.userEntity,
   });
 
-  final String initials;
-  final Color avatarBackgroundColor;
-  final Color avatarTextColor;
-  final String name;
-  final String roleTitle;
-  final String email;
-  final UserRole role;
-  final UserAccountStatus status;
-  final Widget trailing;
+  final CreateUserEntity userEntity;
 
   /// Optional extra tag shown next to the role badge (e.g. "YOU").
   final Widget? tag;
 
   @override
   Widget build(BuildContext context) {
-    final bool isActive = status == UserAccountStatus.active;
+    final bool isActive = userEntity.isActive;
 
     return AppCard(
       padding: const EdgeInsets.all(16),
@@ -52,9 +37,9 @@ class UserListTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               InitialsAvatar(
-                initials: initials,
-                backgroundColor: avatarBackgroundColor,
-                textColor: avatarTextColor,
+                initials: _getFirstTwoCharacters(userEntity.name),
+                backgroundColor: AppColors.background,
+                textColor: AppColors.primary,
                 size: 56,
                 statusDotColor: isActive ? AppColors.link : AppColors.danger,
               ),
@@ -68,21 +53,28 @@ class UserListTile extends StatelessWidget {
                       runSpacing: 4,
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
-                        Text(name, style: AppTextStyles.sectionTitle),
-                        RoleBadge(role: role),
+                        Text(
+                          userEntity.name,
+                          style: AppTextStyles.sectionTitle,
+                        ),
+                        RoleBadge(role: userEntity.role),
                         if (tag != null) tag!,
                       ],
                     ),
                     const SizedBox(height: 4),
-                    Text(roleTitle, style: AppTextStyles.supportBody),
+                    Text(userEntity.jobTitle, style: AppTextStyles.supportBody),
                     // const SizedBox(height: 1),
                     Row(
                       children: [
-                        const Icon(Icons.mail_outline, size: 14, color: AppColors.textSecondary),
+                        const Icon(
+                          Icons.mail_outline,
+                          size: 14,
+                          color: AppColors.textSecondary,
+                        ),
                         const SizedBox(width: 6),
                         Expanded(
                           child: Text(
-                            email,
+                            userEntity.email,
                             overflow: TextOverflow.ellipsis,
                             style: AppTextStyles.supportBody,
                           ),
@@ -94,7 +86,10 @@ class UserListTile extends StatelessWidget {
               ),
               IconButton(
                 onPressed: () {}, // TODO(logic): open per-user actions menu
-                icon: const Icon(Icons.more_vert, color: AppColors.textSecondary),
+                icon: const Icon(
+                  Icons.more_vert,
+                  color: AppColors.textSecondary,
+                ),
               ),
             ],
           ),
@@ -102,12 +97,20 @@ class UserListTile extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              UserStatusPill(status: status),
-              trailing,
+              UserStatusPill(
+                status: userEntity.isActive
+                    ? UserAccountStatus.active
+                    : UserAccountStatus.disabled,
+              ),
             ],
           ),
         ],
       ),
     );
+  }
+
+  String _getFirstTwoCharacters(String name) {
+    String firstTwo = name.substring(0, 2);
+    return firstTwo;
   }
 }

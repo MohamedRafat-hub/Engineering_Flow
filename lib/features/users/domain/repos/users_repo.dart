@@ -1,5 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:engineering_flow/core/errors/failures.dart';
+import 'package:engineering_flow/features/auth/domain/entities/uer_entity.dart';
+import 'package:engineering_flow/features/users/domain/entities/create_user_entity.dart';
 
 abstract class UsersRepo {
   Future<Either<Failure, String>> createUser({
@@ -19,4 +21,6 @@ abstract class UsersRepo {
     required String password ,
     required Map<String, dynamic> userData,
   });
+
+  Future<Either<Failure , List<CreateUserEntity>>>getAllUsers();
 }
