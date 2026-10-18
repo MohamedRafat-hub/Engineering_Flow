@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'package:engineering_flow/core/errors/error_handling.dart';
-import 'package:engineering_flow/features/auth/data/models/user_model.dart';
+import 'package:engineering_flow/features/auth/data/models/auth_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../firebase_options.dart';
 import '../errors/exceptions.dart';
@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 class FirebaseAuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<UserModel> signInWithEmailAndPassword({
+  Future<AuthModel> signInWithEmailAndPassword({
     required String email,
     required String password,
   }) async {
@@ -26,7 +26,7 @@ class FirebaseAuthService {
         throw const AuthException('User not found');
       }
 
-      return UserModel.fromFirebaseUser(user);
+      return AuthModel.fromFirebaseUser(user);
     } on FirebaseAuthException catch (e) {
       log('Firebase Auth Error: ${e.code}');
       throw ErrorHandling.handleAuthException(e);

@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/widgets/app_button.dart';
-import '../../../domain/entities/create_user_entity.dart';
+import '../../../domain/entities/user_entity.dart';
 import '../../managers/user_cubit/user_cubit.dart';
 
 class CreateUserBlocBuilder extends StatelessWidget {
@@ -56,19 +56,19 @@ class CreateUserBlocBuilder extends StatelessWidget {
 
                   globalKey.currentState!.save();
 
-                  CreateUserEntity createUserEntity = CreateUserEntity(
+                  UserEntity createUserEntity = UserEntity(
                     name: nameController.text,
                     email: emailController.text,
                     role: _selectedRoleIndex == 0 ? UserRole.admin : _selectedRoleIndex == 1 ? UserRole.manager : UserRole.employee,
                     jobTitle: jobTitleController.text,
                     isActive: true,
                     phoneNumber: phoneNumber,
-                    createdAt: DateTime.now(),
+                    createdAt: DateTime.now(), id: '',
                   );
 
                   CreateUserAccountParams params = CreateUserAccountParams(
                     password: passwordController.text,
-                    createUserEntity: createUserEntity,
+                    userEntity: createUserEntity,
                   );
                   context.read<UserCubit>().createUserAccount(params: params);
                 },

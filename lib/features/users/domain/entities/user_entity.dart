@@ -1,7 +1,8 @@
 
 import 'package:engineering_flow/features/users/domain/enums/user_role.dart';
 
-class CreateUserEntity {
+class UserEntity {
+  final String id;
   final String name;
   final String email;
   final UserRole role;
@@ -10,18 +11,18 @@ class CreateUserEntity {
   final DateTime createdAt;
   final String? phoneNumber;
 
-  CreateUserEntity( {
+  const UserEntity({
+    required this.id,
     required this.name,
     required this.email,
     required this.role,
     required this.jobTitle,
     required this.isActive,
+    required this.createdAt,
     this.phoneNumber,
-    required this.createdAt
   });
 
-
-  Map<String , dynamic >toMap() {
+  Map<String, dynamic> toMap() {
     return {
       'name': name,
       'email': email,
@@ -32,4 +33,5 @@ class CreateUserEntity {
       'createdAt': createdAt.toIso8601String(),
     };
   }
+
 }

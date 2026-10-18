@@ -4,11 +4,11 @@ import 'package:dartz/dartz.dart';
 import 'package:engineering_flow/core/errors/error_handling.dart';
 import 'package:engineering_flow/core/errors/exceptions.dart';
 import 'package:engineering_flow/core/errors/failures.dart';
-import 'package:engineering_flow/features/auth/data/models/user_model.dart';
-import 'package:engineering_flow/features/auth/domain/entities/uer_entity.dart';
+import 'package:engineering_flow/features/auth/data/models/auth_model.dart';
+import 'package:engineering_flow/features/auth/domain/entities/auth_entity.dart';
 import 'package:engineering_flow/features/users/data/data_sources/users_remote_data_source.dart';
-import 'package:engineering_flow/features/users/data/models/create_user_model.dart';
-import 'package:engineering_flow/features/users/domain/entities/create_user_entity.dart';
+import 'package:engineering_flow/features/users/data/models/user_model.dart';
+import 'package:engineering_flow/features/users/domain/entities/user_entity.dart';
 import 'package:engineering_flow/features/users/domain/repos/users_repo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -82,11 +82,9 @@ class UsersRepoImpl implements UsersRepo {
         await _remoteDataSource.addUser(userData: userData, uid: uid);
 
         return right(null);
-      }  on AuthException catch(e)
-    {
-      return left(ServerFailure(e.message));
-    }
-      catch (e) {
+      } on AuthException catch (e) {
+        return left(ServerFailure(e.message));
+      } catch (e) {
         if (uid != null) {
           try {
             await _remoteDataSource.deleteUser(uid: uid);
@@ -101,26 +99,63 @@ class UsersRepoImpl implements UsersRepo {
             ? ErrorHandling.handleAuthException(e).message
             : e.toString();
 
-        message = e is FirebaseException ? ErrorHandling.handleFirestoreException(e).message : message;
+        message = e is FirebaseException
+            ? ErrorHandling.handleFirestoreException(e).message
+            : message;
 
         return left(ServerFailure(message));
       }
     }
   }
 
+
   @override
-  Future<Either<Failure, List<CreateUserEntity>>> getAllUsers()async {
+  Stream<Either<Failure, List<UserEntity>>> getAllUsers() async* {
     try {
-      final data = await _remoteDataSource.getAllUsers();
-      List<CreateUserModel> usersList = data.map((e) => CreateUserModel.fromMap(e)).toList();
-      final users = usersList.map((e) => e.toEntity()).toList();
-      return right(users);
+      await for (final data in _remoteDataSource.getAllUsers()) {
+        final users = data.map((map) {
+          return UserModel.fromMap(
+            map,
+            id: map['id'] as String,
+          ).toEntity();
+        }).toList();
+
+        yield right(users);
+      }
     } on FirebaseException catch (e) {
       final exception = ErrorHandling.handleFirestoreException(e);
-      return left(ServerFailure(exception.message));
-    }catch(e)
-    {
-      return left(ServerFailure("There was an error while fetching users: ${e.toString()}"));
+      yield left(ServerFailure(exception.message));
+    } catch (e, stackTrace) {
+      log(
+        'Unexpected error while watching users',
+        error: e,
+        stackTrace: stackTrace,
+      );
+
+      yield left(
+        ServerFailure('There was an error while fetching users.'),
+      );
+    }
+  }
+
+
+  @override
+  Future<Either<Failure, void>> changeUserActiveStatus(
+    String userId,
+    bool isActive,
+  ) async {
+    try {
+      await _remoteDataSource.changeUserActiveStatus(userId, isActive, {
+        'isActive': isActive,
+      });
+      return right(null);
+    } on FirebaseException catch (e) {
+      final String errorMessage = ErrorHandling.handleFirestoreException(
+        e,
+      ).message;
+      return left(ServerFailure(errorMessage));
+    } catch (e) {
+      return left(ServerFailure("Something went wrong. ${e.toString()}"));
     }
   }
 }

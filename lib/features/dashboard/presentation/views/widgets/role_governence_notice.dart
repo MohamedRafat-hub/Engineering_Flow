@@ -26,7 +26,7 @@ class RoleGovernanceNotice extends StatelessWidget {
       titleStyle: AppTextStyles.pill(color: Colors.white, weight: FontWeight.w700, size: 14),
       messageStyle: AppTextStyles.pill(color: Colors.white70, size: 12.5, height: 1.5),
       message: const TextSpan(
-        text: 'Role provisioning and user access active. All 31 active '
+        text: 'Role provisioning and user access active. All active '
             'users authenticated under enterprise security policy.',
       ),
     );

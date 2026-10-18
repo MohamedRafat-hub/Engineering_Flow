@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:engineering_flow/core/errors/failures.dart';
-import 'package:engineering_flow/features/auth/domain/entities/uer_entity.dart';
-import 'package:engineering_flow/features/users/domain/entities/create_user_entity.dart';
+import 'package:engineering_flow/features/auth/domain/entities/auth_entity.dart';
+import 'package:engineering_flow/features/users/domain/entities/user_entity.dart';
 
 abstract class UsersRepo {
   Future<Either<Failure, String>> createUser({
@@ -22,5 +22,11 @@ abstract class UsersRepo {
     required Map<String, dynamic> userData,
   });
 
-  Future<Either<Failure , List<CreateUserEntity>>>getAllUsers();
+  Stream<Either<Failure, List<UserEntity>>>getAllUsers();
+
+
+  Future<Either<Failure, void>> changeUserActiveStatus(
+    String userId,
+    bool isActive,
+  );
 }

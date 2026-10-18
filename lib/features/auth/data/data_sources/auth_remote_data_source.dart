@@ -1,8 +1,8 @@
 import 'package:engineering_flow/core/services/firebase_auth_service.dart';
-import 'package:engineering_flow/features/auth/data/models/user_model.dart';
+import 'package:engineering_flow/features/auth/data/models/auth_model.dart';
 
 abstract class AuthRemoteDataSource {
-  Future<UserModel> login({required String email , required String password});
+  Future<AuthModel> login({required String email , required String password});
   Future<void> passwordReset({required String email});
 }
 
@@ -13,7 +13,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource{
 
   AuthRemoteDataSourceImpl(this._firebaseAuthService);
   @override
-  Future<UserModel> login({required String email, required String password}) {
+  Future<AuthModel> login({required String email, required String password}) {
     return _firebaseAuthService.signInWithEmailAndPassword(email: email, password: password);
   }
 

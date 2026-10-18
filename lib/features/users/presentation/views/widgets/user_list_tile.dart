@@ -1,17 +1,17 @@
-import 'package:engineering_flow/features/users/domain/entities/create_user_entity.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:engineering_flow/features/users/domain/entities/user_entity.dart';
 
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/theme/app_text_styles.dart';
+import '../../../../../core/utils/helper_functions/get_first_two_characters.dart';
 import '../../../../../core/widgets/app_card.dart';
 import '../../../../../core/widgets/initial_avatar.dart';
 import '../../../../../core/widgets/user_status_pill.dart';
+import '../../managers/get_users_cubit/get_users_cubit.dart';
 import 'role_badge.dart';
 
-/// One row of the Users directory. [trailing] is the bottom-right slot
-/// whose content varies per user (an ID, an "Enable User" action, or an
-/// "Workspace Owner" label), kept generic so this tile doesn't need to
-/// know about every possible variant.
 class UserListTile extends StatelessWidget {
   const UserListTile({
     super.key,
@@ -19,9 +19,7 @@ class UserListTile extends StatelessWidget {
     required this.userEntity,
   });
 
-  final CreateUserEntity userEntity;
-
-  /// Optional extra tag shown next to the role badge (e.g. "YOU").
+  final UserEntity userEntity;
   final Widget? tag;
 
   @override
@@ -37,11 +35,12 @@ class UserListTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               InitialsAvatar(
-                initials: _getFirstTwoCharacters(userEntity.name),
+                initials: getFirstTwoCharacters(userEntity.name),
                 backgroundColor: AppColors.background,
                 textColor: AppColors.primary,
                 size: 56,
-                statusDotColor: isActive ? AppColors.link : AppColors.danger,
+                statusDotColor:
+                isActive ? AppColors.link : AppColors.danger,
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -62,8 +61,10 @@ class UserListTile extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 4),
-                    Text(userEntity.jobTitle, style: AppTextStyles.supportBody),
-                    // const SizedBox(height: 1),
+                    Text(
+                      userEntity.jobTitle,
+                      style: AppTextStyles.supportBody,
+                    ),
                     Row(
                       children: [
                         const Icon(
@@ -84,12 +85,52 @@ class UserListTile extends StatelessWidget {
                   ],
                 ),
               ),
-              IconButton(
-                onPressed: () {}, // TODO(logic): open per-user actions menu
+              PopupMenuButton<String>(
                 icon: const Icon(
                   Icons.more_vert,
                   color: AppColors.textSecondary,
                 ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                onSelected: (value) {
+                  if (value == 'toggle_status') {
+                    context.read<GetUsersCubit>().changeActivateStatus(
+                      userId: userEntity.id,
+                      isActive: !isActive,
+                    );
+                  }
+                },
+                itemBuilder: (context) => [
+                  PopupMenuItem<String>(
+                    value: 'toggle_status',
+                    child: Row(
+                      children: [
+                        Icon(
+                          isActive
+                              ? Icons.block
+                              : Icons.check_circle_outline,
+                          size: 18,
+                          color: isActive
+                              ? AppColors.danger
+                              : AppColors.link,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          isActive
+                              ? 'Deactivate User'
+                              : 'Activate User',
+                          style: AppTextStyles.supportBody.copyWith(
+                            color: isActive
+                                ? AppColors.danger
+                                : AppColors.link,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -98,7 +139,7 @@ class UserListTile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               UserStatusPill(
-                status: userEntity.isActive
+                status: isActive
                     ? UserAccountStatus.active
                     : UserAccountStatus.disabled,
               ),
@@ -107,10 +148,5 @@ class UserListTile extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String _getFirstTwoCharacters(String name) {
-    String firstTwo = name.substring(0, 2);
-    return firstTwo;
   }
 }

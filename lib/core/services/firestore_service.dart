@@ -17,27 +17,43 @@ class FireStoreService extends DatabaseService {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getData({
+  @override
+  Stream<List<Map<String, dynamic>>> getData({
     required String path,
     String? uid,
-  }) async {
+  }) {
+    final collection = FirebaseFirestore.instance.collection(path);
+
     if (uid != null) {
-      final snapshot =
-      await _firebaseFireStore.collection(path).doc(uid).get();
+      return collection.doc(uid).snapshots().map((snapshot) {
+        if (!snapshot.exists) return [];
 
-      if (!snapshot.exists) {
-        return [];
-      }
-
-      return [
-        snapshot.data() as Map<String, dynamic>,
-      ];
+        return [
+          {
+            ...snapshot.data()!,
+            'id': snapshot.id,
+          },
+        ];
+      });
     }
 
-    final snapshot = await _firebaseFireStore.collection(path).get();
+    return collection.snapshots().map(
+          (snapshot) => snapshot.docs.map((document) {
+        return {
+          ...document.data(),
+          'id': document.id,
+        };
+      }).toList(),
+    );
+  }
 
-    return snapshot.docs
-        .map((doc) => doc.data() as Map<String, dynamic>)
-        .toList();
+
+  @override
+  Future<void> updateData(
+    String userId,
+    Map<String, dynamic> data,
+    String path,
+  )async {
+    _firebaseFireStore.collection(path).doc(userId).update(data);
   }
 }

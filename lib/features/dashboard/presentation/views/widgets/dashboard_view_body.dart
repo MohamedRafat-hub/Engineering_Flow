@@ -1,4 +1,3 @@
-
 import 'package:engineering_flow/features/dashboard/presentation/views/widgets/recent_activity_card.dart';
 import 'package:engineering_flow/features/dashboard/presentation/views/widgets/role_governence_notice.dart';
 import 'package:engineering_flow/features/dashboard/presentation/views/widgets/welcome_banner_card.dart';
@@ -14,21 +13,24 @@ class DashboardViewBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScrollableCenteredBody(
-      children: [
-        const WelcomeBannerCard(
+      children: const [
+        WelcomeBannerCard(
           organizationName: 'Acme Engineering Corp',
           userFirstName: 'Mohamed',
           subtitle: "Here's what's happening in your company",
         ),
-        const SizedBox(height: 20),
-        const DashboardStatsRow(),
-        const SizedBox(height: 20),
+
+        SizedBox(height: 20),
+        DashboardStatsRow(),
+
+        SizedBox(height: 20),
         DirectoryByRoleCard(),
-        const SizedBox(height: 20),
+         SizedBox(height: 20),
         RoleGovernanceNotice(),
-        const SizedBox(height: 20),
+        SizedBox(height: 20),
         RecentActivityCard(),
       ],
     );
   }
 }
+

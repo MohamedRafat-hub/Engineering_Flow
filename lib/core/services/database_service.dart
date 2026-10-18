@@ -5,8 +5,12 @@ abstract class DatabaseService {
     String? uid,
   });
 
-  Future<List<Map<String, dynamic>>> getData({
+
+  Stream<List<Map<String, dynamic>>> getData({
     required String path,
     String? uid,
-  });// General method
+  });
+  // General method
+
+  Future<void> updateData(String userId, Map<String, dynamic> data , String path);
 }

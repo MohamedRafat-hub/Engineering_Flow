@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:engineering_flow/core/errors/exceptions.dart';
 import 'package:engineering_flow/core/errors/failures.dart';
 import 'package:engineering_flow/features/auth/data/data_sources/auth_remote_data_source.dart';
-import 'package:engineering_flow/features/auth/domain/entities/uer_entity.dart';
+import 'package:engineering_flow/features/auth/domain/entities/auth_entity.dart';
 import 'package:engineering_flow/features/auth/domain/repositories/auth_repo.dart';
 
 class AuthRepoImpl implements AuthRepo{
@@ -11,9 +11,9 @@ class AuthRepoImpl implements AuthRepo{
 
   AuthRepoImpl(this._authRemoteDataSource);
   @override
-  Future<Either<Failure, UserEntity>> login({required String email, required String password})async {
+  Future<Either<Failure, AuthEntity>> login({required String email, required String password})async {
     try {
-      UserEntity userEntity =await  _authRemoteDataSource.login(email: email, password: password);
+      AuthEntity userEntity =await  _authRemoteDataSource.login(email: email, password: password);
       return right(userEntity);
       
     } on AuthException catch (e) {

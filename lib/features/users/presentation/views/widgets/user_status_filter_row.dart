@@ -1,68 +1,49 @@
 import 'package:engineering_flow/features/users/domain/enums/user_filter.dart';
-import 'package:engineering_flow/features/users/presentation/managers/get_users_cubit/get_users_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/widgets/counter_filter_chip.dart';
+import '../../managers/get_users_cubit/get_users_cubit.dart';
+import '../../managers/get_users_cubit/get_users_state.dart';
 
-class UserStatusFilterRow extends StatefulWidget {
+class UserStatusFilterRow extends StatelessWidget {
   const UserStatusFilterRow({super.key});
-
-
-  @override
-  State<UserStatusFilterRow> createState() => _UserStatusFilterRowState();
-}
-
-class _UserStatusFilterRowState extends State<UserStatusFilterRow> {
-  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: BlocBuilder<GetUsersCubit, GetUsersState>(
-  builder: (context, state) {
-    return Row(
-        children: [
-          CountFilterChip(
-            label: 'All',
-            count:  context.read<GetUsersCubit>().allUsersCount,
-            selected: selectedIndex == 0,
-            onTap: () {
-              setState(() {
-                selectedIndex = 0;
-                context.read<GetUsersCubit>().changeFilter(UserFilter.all);
-              });
-            }, // TODO(logic): filter: all users
-          ),
-          const SizedBox(width: 10),
-          CountFilterChip(
-            label: 'Active',
-            count: context.read<GetUsersCubit>().activeUsersCount,
-            selected: selectedIndex == 1,
-            onTap: () {
-              setState(() {
-                selectedIndex = 1;
-                context.read<GetUsersCubit>().changeFilter(UserFilter.active);
-              });
-            }, // TODO(logic): filter: active users
-          ),
-          const SizedBox(width: 10),
-          CountFilterChip(
-            count:  context.read<GetUsersCubit>().disableUsersCount,
-            label: 'Disabled',
-            selected: selectedIndex == 2,
-            onTap: () {
-              setState(() {
-                selectedIndex = 2;
-                context.read<GetUsersCubit>().changeFilter(UserFilter.disabled);
-              });
-            }, // TODO(logic): filter: disabled users
-          ),
-        ],
-      );
-  },
-),
+        builder: (context, state) {
+          final statistics = state.statistics;
+          final cubit = context.read<GetUsersCubit>();
+
+          return Row(
+            children: [
+              CountFilterChip(
+                label: 'All',
+                count: statistics.totalUsers,
+                selected: state.selectedFilter == UserFilter.all,
+                onTap: () => cubit.changeFilter(UserFilter.all),
+              ),
+              const SizedBox(width: 10),
+              CountFilterChip(
+                label: 'Active',
+                count: statistics.activeUsers,
+                selected: state.selectedFilter == UserFilter.active,
+                onTap: () => cubit.changeFilter(UserFilter.active),
+              ),
+              const SizedBox(width: 10),
+              CountFilterChip(
+                label: 'Disabled',
+                count: statistics.disabledUsers,
+                selected: state.selectedFilter == UserFilter.disabled,
+                onTap: () => cubit.changeFilter(UserFilter.disabled),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:engineering_flow/core/errors/failures.dart';
 import 'package:engineering_flow/core/use_cases/use_case.dart';
-import 'package:engineering_flow/features/users/domain/entities/create_user_entity.dart';
+import 'package:engineering_flow/features/users/domain/entities/user_entity.dart';
 
 import '../repos/users_repo.dart';
 
@@ -13,19 +13,19 @@ class CreateUserAccountUseCase extends UseCase<void, CreateUserAccountParams> {
   @override
   Future<Either<Failure, dynamic>> call(params) {
     return _usersRepo.createUserAccount(
-      email: params.createUserEntity.email,
+      email: params.userEntity.email,
       password: params.password,
-      userData: params.createUserEntity.toMap(),
+      userData: params.userEntity.toMap(),
     );
   }
 }
 
 class CreateUserAccountParams {
   final String password;
-  final CreateUserEntity createUserEntity;
+  final UserEntity userEntity;
 
   CreateUserAccountParams({
     required this.password,
-    required this.createUserEntity,
+    required this.userEntity,
   });
 }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -7,6 +9,7 @@ class ErrorHandling {
   // ─────────────── Firebase Auth ───────────────
 
   static AuthException handleAuthException(FirebaseAuthException e) {
+    log(e.toString());
     switch (e.code) {
       case 'invalid-credential':
         return AuthException(

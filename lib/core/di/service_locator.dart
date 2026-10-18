@@ -8,6 +8,7 @@ import 'package:engineering_flow/features/auth/domain/use_cases/password_reset_u
 import 'package:engineering_flow/features/users/data/data_sources/users_remote_data_source.dart';
 import 'package:engineering_flow/features/users/data/repos/users_repo_impl.dart';
 import 'package:engineering_flow/features/users/domain/repos/users_repo.dart';
+import 'package:engineering_flow/features/users/domain/use_cases/change_user_activate_status_use_case.dart';
 import 'package:engineering_flow/features/users/domain/use_cases/create_user_account_use_case.dart';
 import 'package:engineering_flow/features/users/domain/use_cases/get_all_users_use_case.dart';
 import 'package:get_it/get_it.dart';
@@ -42,4 +43,6 @@ void setUp() {
   getIt.registerSingleton(CreateUserAccountUseCase(getIt.get<UsersRepo>()));
 
   getIt.registerSingleton(GetAllUsersUseCase(getIt.get<UsersRepo>()));
+
+  getIt.registerSingleton(ChangeUserActivateStatusUseCase(getIt.get<UsersRepo>()));
 }

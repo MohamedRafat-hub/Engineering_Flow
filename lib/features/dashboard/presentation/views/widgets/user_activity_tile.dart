@@ -1,3 +1,5 @@
+import 'package:engineering_flow/core/utils/helper_functions/get_first_two_characters.dart';
+import 'package:engineering_flow/features/users/domain/entities/user_entity.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/theme/app_colors.dart';
@@ -7,20 +9,9 @@ import '../../../../../core/widgets/status_pill.dart';
 import '../../../../../core/widgets/user_status_pill.dart';
 
 class UserActivityTile extends StatelessWidget {
-  const UserActivityTile({
-    super.key,
-    required this.initials,
-    required this.name,
-    required this.role,
-    required this.tier,
-    required this.status,
-  });
+  const UserActivityTile({super.key, required this.userEntity});
 
-  final String initials;
-  final String name;
-  final String role;
-  final String tier;
-  final UserAccountStatus status;
+  final UserEntity userEntity;
 
   @override
   Widget build(BuildContext context) {
@@ -33,22 +24,22 @@ class UserActivityTile extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          InitialsAvatar(initials: initials),
+          InitialsAvatar(initials: getFirstTwoCharacters(userEntity.name)),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(name, style: AppTextStyles.noticeTitle),
+                Text(userEntity.name, style: AppTextStyles.noticeTitle),
                 const SizedBox(height: 4),
                 Wrap(
                   spacing: 6,
                   runSpacing: 4,
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
-                    Text(role, style: AppTextStyles.supportBody),
+                    Text(userEntity.jobTitle, style: AppTextStyles.supportBody),
                     StatusPill(
-                      label: tier,
+                      label: userEntity.role.name,
                       dotColor: AppColors.textSecondary,
                       backgroundColor: AppColors.tagBackground,
                       textStyle: AppTextStyles.pill(
@@ -62,7 +53,11 @@ class UserActivityTile extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 8),
-          UserStatusPill(status: status),
+          UserStatusPill(
+            status: userEntity.isActive
+                ? UserAccountStatus.active
+                : UserAccountStatus.disabled,
+          ),
         ],
       ),
     );
