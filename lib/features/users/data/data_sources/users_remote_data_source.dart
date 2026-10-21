@@ -1,3 +1,4 @@
+import 'package:engineering_flow/core/constants/firestore_constants.dart';
 import 'package:engineering_flow/core/services/firebase_auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -39,7 +40,7 @@ class UsersRemoteDataSourceImpl implements UsersRemoteDataSource {
     required String uid,
   }) async {
     return await _databaseService.addData(
-      path: 'users',
+      path: FirestoreConstants.usersCollection,
       data: userData,
       uid: uid,
     );
@@ -59,7 +60,7 @@ class UsersRemoteDataSourceImpl implements UsersRemoteDataSource {
 
   @override
   Future<void> deleteUser({required String uid}) {
-    return _databaseService.addData(path: 'users', data: {}, uid: uid);
+    return _databaseService.addData(path: FirestoreConstants.usersCollection, data: {}, uid: uid);
   }
 
   @override
@@ -67,7 +68,7 @@ class UsersRemoteDataSourceImpl implements UsersRemoteDataSource {
     String? uid,
   }) {
     return _databaseService.getData(
-      path: 'users',
+      path: FirestoreConstants.usersCollection,
       uid: uid,
     );
   }
@@ -77,6 +78,6 @@ class UsersRemoteDataSourceImpl implements UsersRemoteDataSource {
     bool isActive,
     Map<String, dynamic> data,
   ) async {
-    await _databaseService.updateData(userId, data, 'users');
+    await _databaseService.updateData(userId, data, FirestoreConstants.usersCollection);
   }
 }
