@@ -29,4 +29,6 @@ abstract class UsersRepo {
     String userId,
     bool isActive,
   );
+
+  Future<Either<Failure, UserEntity>> getCurrentUser();
 }

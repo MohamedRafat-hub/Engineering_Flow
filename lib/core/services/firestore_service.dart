@@ -2,7 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:engineering_flow/core/services/database_service.dart';
 
 class FireStoreService extends DatabaseService {
-  final FirebaseFirestore _firebaseFireStore = FirebaseFirestore.instance;
+  final FirebaseFirestore _firebaseFireStore =
+      FirebaseFirestore.instance;
 
   @override
   Future<void> addData({
@@ -11,9 +12,14 @@ class FireStoreService extends DatabaseService {
     String? uid,
   }) async {
     if (uid != null) {
-      await _firebaseFireStore.collection(path).doc(uid).set(data);
+      await _firebaseFireStore
+          .collection(path)
+          .doc(uid)
+          .set(data);
     } else {
-      await _firebaseFireStore.collection(path).add(data);
+      await _firebaseFireStore
+          .collection(path)
+          .add(data);
     }
   }
 
@@ -22,11 +28,11 @@ class FireStoreService extends DatabaseService {
     required String path,
     String? uid,
   }) {
-    final collection = FirebaseFirestore.instance.collection(path);
+    final collection = _firebaseFireStore.collection(path);
 
     if (uid != null) {
       return collection.doc(uid).snapshots().map((snapshot) {
-        if (!snapshot.exists) return [];
+        if (!snapshot.exists) return <Map<String, dynamic>>[];
 
         return [
           {
@@ -47,13 +53,35 @@ class FireStoreService extends DatabaseService {
     );
   }
 
+  @override
+  Future<Map<String, dynamic>?> getDocument({
+    required String path,
+    required String uid,
+  }) async {
+    final document = await _firebaseFireStore
+        .collection(path)
+        .doc(uid)
+        .get();
+
+    if (!document.exists) {
+      return null;
+    }
+
+    return {
+      ...document.data()!,
+      'id': document.id,
+    };
+  }
 
   @override
   Future<void> updateData(
-    String userId,
-    Map<String, dynamic> data,
-    String path,
-  )async {
-    _firebaseFireStore.collection(path).doc(userId).update(data);
+      String userId,
+      Map<String, dynamic> data,
+      String path,
+      ) async {
+    await _firebaseFireStore
+        .collection(path)
+        .doc(userId)
+        .update(data);
   }
 }

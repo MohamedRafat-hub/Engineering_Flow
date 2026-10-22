@@ -3,6 +3,7 @@ import 'package:engineering_flow/core/widgets/app_bottom_nav_bar.dart';
 import 'package:engineering_flow/features/users/domain/use_cases/change_user_activate_status_use_case.dart';
 import 'package:engineering_flow/features/users/domain/use_cases/get_all_users_use_case.dart';
 import 'package:engineering_flow/features/users/presentation/managers/get_users_cubit/get_users_cubit.dart';
+import 'package:engineering_flow/features/users/presentation/views/user_details_view.dart';
 import 'package:engineering_flow/features/users/presentation/views/users_view.dart';
 import 'package:engineering_flow/profile_view.dart';
 import 'package:engineering_flow/projects_view.dart';
@@ -24,7 +25,7 @@ class _MainScreenState extends State<MainScreen> {
     DashboardView(),
     UsersView(),
     ProjectsView(),
-    ProfileView(),
+    UserDetailsView(),
   ];
 
   @override

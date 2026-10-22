@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_text_styles.dart';
 
-enum AppButtonVariant { primary, tonal, accent, outline }
+enum AppButtonVariant { primary, tonal, accent, outline, danger }
 
 enum AppButtonShape { rectangle, stadium }
 
@@ -53,11 +53,11 @@ class AppButton extends StatelessWidget {
         children: [
           if (_leading(iconSize) != null) ...[
             _leading(iconSize)!,
-            const SizedBox(width: 8),
+            const SizedBox(width: 6),
           ],
           Text(label),
           if (_trailing(iconSize) != null) ...[
-            const SizedBox(width: 8),
+            const SizedBox(width: 6),
             _trailing(iconSize)!,
           ],
         ],
@@ -80,22 +80,27 @@ class AppButton extends StatelessWidget {
   ButtonStyle _buildStyle() {
     ButtonStyle style = switch (variant) {
       AppButtonVariant.primary =>
-          ElevatedButton.styleFrom(minimumSize: const Size(64, 48)),
+        ElevatedButton.styleFrom(minimumSize: const Size(64, 48)),
       AppButtonVariant.tonal => ElevatedButton.styleFrom(
-        backgroundColor: AppColors.badgeBackground,
-        foregroundColor: AppColors.primary,
-        minimumSize: const Size(64, 48),
-      ),
+          backgroundColor: AppColors.badgeBackground,
+          foregroundColor: AppColors.primary,
+          minimumSize: const Size(64, 48),
+        ),
       AppButtonVariant.accent => ElevatedButton.styleFrom(
-        backgroundColor: AppColors.secondary,
-        minimumSize: const Size(64, 48),
-      ),
+          backgroundColor: AppColors.secondary,
+          minimumSize: const Size(64, 48),
+        ),
       AppButtonVariant.outline => ElevatedButton.styleFrom(
-        backgroundColor: AppColors.surface,
-        foregroundColor: AppColors.textPrimary,
-        side: const BorderSide(color: AppColors.noticeBorder),
-        minimumSize: const Size(64, 48),
-      ),
+          backgroundColor: AppColors.surface,
+          foregroundColor: AppColors.textPrimary,
+          side: const BorderSide(color: AppColors.noticeBorder),
+          minimumSize: const Size(64, 48),
+        ),
+      AppButtonVariant.danger => ElevatedButton.styleFrom(
+          backgroundColor: AppColors.dangerSurface,
+          foregroundColor: AppColors.danger,
+          minimumSize: const Size(64, 48),
+        ),
     };
 
     if (compact) {

@@ -31,4 +31,5 @@ abstract final class AppColors {
   static const Color dangerSurface = Color(0xFFFDE4E4);
   static const Color dangerGlowOuter = Color(0xFFFDE8E8);
   static const Color dangerGlowInner = Color(0xFFFAD0D0);
+  static const Color success = Colors.green;
 }

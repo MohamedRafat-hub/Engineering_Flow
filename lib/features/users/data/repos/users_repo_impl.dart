@@ -4,8 +4,6 @@ import 'package:dartz/dartz.dart';
 import 'package:engineering_flow/core/errors/error_handling.dart';
 import 'package:engineering_flow/core/errors/exceptions.dart';
 import 'package:engineering_flow/core/errors/failures.dart';
-import 'package:engineering_flow/features/auth/data/models/auth_model.dart';
-import 'package:engineering_flow/features/auth/domain/entities/auth_entity.dart';
 import 'package:engineering_flow/features/users/data/data_sources/users_remote_data_source.dart';
 import 'package:engineering_flow/features/users/data/models/user_model.dart';
 import 'package:engineering_flow/features/users/domain/entities/user_entity.dart';
@@ -55,7 +53,7 @@ class UsersRepoImpl implements UsersRepo {
   @override
   Future<Either<Failure, void>> deleteUser({required String uid}) async {
     try {
-      await _remoteDataSource.deleteUser(uid: uid);
+      await _remoteDataSource.deleteUser(id: uid);
       return right(null);
     } on FirebaseAuthException catch (e) {
       final authException = ErrorHandling.handleAuthException(e);
@@ -87,7 +85,7 @@ class UsersRepoImpl implements UsersRepo {
       } catch (e) {
         if (uid != null) {
           try {
-            await _remoteDataSource.deleteUser(uid: uid);
+            await _remoteDataSource.deleteUser(id: uid);
           } catch (deleteError) {
             log('Rollback failed: $deleteError');
           }
@@ -158,4 +156,37 @@ class UsersRepoImpl implements UsersRepo {
       return left(ServerFailure("Something went wrong. ${e.toString()}"));
     }
   }
+
+
+  @override
+  Future<Either<Failure, UserEntity>> getCurrentUser() async {
+    try {
+      final userData = await _remoteDataSource.getCurrentUser();
+
+      if (userData == null) {
+        return left(ServerFailure('User profile not found.'));
+      }
+
+      final userModel = UserModel.fromMap(
+        userData,
+        id: userData['id'] as String,
+      );
+
+      return right(userModel.toEntity());
+    } on FirebaseException catch (e) {
+      final exception = ErrorHandling.handleFirestoreException(e);
+      return left(ServerFailure(exception.message));
+    } catch (e, stackTrace) {
+      log(
+        'Unexpected error while fetching current user',
+        error: e,
+        stackTrace: stackTrace,
+      );
+
+      return left(
+        ServerFailure('There was an error while fetching your profile.'),
+      );
+    }
+  }
+
 }

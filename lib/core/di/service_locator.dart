@@ -11,6 +11,8 @@ import 'package:engineering_flow/features/users/domain/repos/users_repo.dart';
 import 'package:engineering_flow/features/users/domain/use_cases/change_user_activate_status_use_case.dart';
 import 'package:engineering_flow/features/users/domain/use_cases/create_user_account_use_case.dart';
 import 'package:engineering_flow/features/users/domain/use_cases/get_all_users_use_case.dart';
+import 'package:engineering_flow/features/users/domain/use_cases/get_current_user_use_case.dart';
+import 'package:engineering_flow/features/users/presentation/managers/profile_cubit/profile_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import '../../features/auth/data/repositories/auth_repo_impl.dart';
@@ -45,4 +47,9 @@ void setUp() {
   getIt.registerSingleton(GetAllUsersUseCase(getIt.get<UsersRepo>()));
 
   getIt.registerSingleton(ChangeUserActivateStatusUseCase(getIt.get<UsersRepo>()));
-}
+
+  getIt.registerSingleton(GetCurrentUserUseCase(getIt.get<UsersRepo>()));
+
+  getIt.registerFactory<ProfileCubit>(
+        () => ProfileCubit(getIt<GetCurrentUserUseCase>()),
+  );}
