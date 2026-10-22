@@ -5,16 +5,20 @@ import 'package:engineering_flow/features/auth/domain/use_cases/login_use_case.d
 import 'package:engineering_flow/features/auth/domain/use_cases/password_reset_use_case.dart';
 import 'package:meta/meta.dart';
 
+import '../../../domain/use_cases/logout_use_case.dart';
+
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit(
-    LoginUseCase loginUseCase,
-    PasswordResetUseCase passwordResetUseCase,
-  ) : _passwordResetUseCase = passwordResetUseCase,
-      _loginUseCase = loginUseCase,
-      super(AuthInitial());
-
+      LoginUseCase loginUseCase,
+      PasswordResetUseCase passwordResetUseCase,
+      LogoutUseCase logoutUseCase,
+      ) : _loginUseCase = loginUseCase,
+        _passwordResetUseCase = passwordResetUseCase,
+        _logoutUseCase = logoutUseCase,
+        super(AuthInitial());
+  final LogoutUseCase _logoutUseCase;
   final LoginUseCase _loginUseCase;
   final PasswordResetUseCase _passwordResetUseCase;
 
@@ -80,6 +84,23 @@ class AuthCubit extends Cubit<AuthState> {
       },
       (success) {
         startResendCooldown();
+      },
+    );
+  }
+
+  Future<void> logout() async {
+    emit(AuthLogoutLoading());
+
+    final result = await _logoutUseCase.call(null);
+
+    if (isClosed) return;
+
+    result.fold(
+          (failure) {
+        emit(AuthLogoutFailure(failure.message));
+      },
+          (_) {
+        emit(AuthLogoutSuccess());
       },
     );
   }

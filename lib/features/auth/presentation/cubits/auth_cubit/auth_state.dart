@@ -18,3 +18,14 @@ final class ResendCooldownChanged extends AuthState {
 
   ResendCooldownChanged(this.cooldown);
 }
+
+
+final class AuthLogoutLoading extends AuthState {}
+
+final class AuthLogoutSuccess extends AuthState {}
+
+final class AuthLogoutFailure extends AuthState {
+  final String message;
+
+  AuthLogoutFailure(this.message);
+}

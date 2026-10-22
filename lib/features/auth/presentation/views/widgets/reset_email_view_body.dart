@@ -9,10 +9,10 @@ import 'package:go_router/go_router.dart';
 import '../../../../../core/di/service_locator.dart';
 import '../../../../../core/widgets/scrollable_centered_body.dart';
 import '../../../domain/use_cases/login_use_case.dart';
+import '../../../domain/use_cases/logout_use_case.dart';
 import '../../../domain/use_cases/password_reset_use_case.dart';
 import '../../cubits/auth_cubit/auth_cubit.dart';
 import 'back_sign_in_button.dart';
-
 
 class ResetEmailSentViewBody extends StatelessWidget {
   const ResetEmailSentViewBody({super.key, required this.email});
@@ -34,10 +34,12 @@ class ResetEmailSentViewBody extends StatelessWidget {
         ),
         SizedBox(height: 24),
         BlocProvider(
-          create: (context) => AuthCubit(getIt.get<LoginUseCase>(), getIt.get<PasswordResetUseCase>()),
-          child: ResendResetLinkSection(
-            email: email,
+          create: (context) => AuthCubit(
+            getIt.get<LoginUseCase>(),
+            getIt.get<PasswordResetUseCase>(),
+            getIt.get<LogoutUseCase>()
           ),
+          child: ResendResetLinkSection(email: email),
         ),
         SizedBox(height: 24),
         SpamFolderNoticeCard(),

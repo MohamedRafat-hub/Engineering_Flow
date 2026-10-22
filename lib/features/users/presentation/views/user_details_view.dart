@@ -1,4 +1,5 @@
 import 'package:engineering_flow/core/widgets/main_app_bar.dart';
+import 'package:engineering_flow/features/auth/presentation/cubits/auth_cubit/auth_cubit.dart';
 import 'package:engineering_flow/features/users/presentation/views/widgets/user_details_view_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,13 +15,18 @@ class UserDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       appBar: MainAppBar(title: "User Details"),
       body: SafeArea(child: BlocProvider(
-        create: (_) => getIt<ProfileCubit>()..getCurrentUser(),
+        create: (_) =>
+        getIt<ProfileCubit>()
+          ..getCurrentUser(),
         child: const UserDetailsViewBody(),
       )),
-      bottomNavigationBar: UserDetailsActionBar(),
+      bottomNavigationBar: BlocProvider(
+        create: (context) => AuthCubit(getIt.get(), getIt.get(), getIt.get()),
+        child: UserDetailsActionBar(),
+      ),
     );
   }
 }

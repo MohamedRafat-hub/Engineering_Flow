@@ -1,4 +1,5 @@
 import 'package:engineering_flow/core/di/service_locator.dart';
+import 'package:engineering_flow/features/auth/domain/use_cases/logout_use_case.dart';
 import 'package:engineering_flow/features/auth/domain/use_cases/password_reset_use_case.dart';
 import 'package:engineering_flow/features/auth/presentation/cubits/auth_cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class ForgotPasswordViewBody extends StatelessWidget {
         ForgotPasswordHeader(),
         SizedBox(height: 24),
         BlocProvider(
-          create: (context) => AuthCubit(getIt.get<LoginUseCase>(), getIt.get<PasswordResetUseCase>()),
+          create: (context) => AuthCubit(getIt.get<LoginUseCase>(), getIt.get<PasswordResetUseCase>() , getIt.get<LogoutUseCase>()),
           child: ForgotPasswordFormCard(),
         ),
         SizedBox(height: 16),

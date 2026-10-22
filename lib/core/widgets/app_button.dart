@@ -48,20 +48,26 @@ class AppButton extends StatelessWidget {
     final button = ElevatedButton(
       onPressed: onPressed,
       style: _buildStyle(),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (_leading(iconSize) != null) ...[
-            _leading(iconSize)!,
-            const SizedBox(width: 6),
-          ],
-          Text(label),
-          if (_trailing(iconSize) != null) ...[
-            const SizedBox(width: 6),
-            _trailing(iconSize)!,
-          ],
+      child:  Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (_leading(iconSize) != null) ...[
+          _leading(iconSize)!,
+          const SizedBox(width: 6),
         ],
-      ),
+        Flexible(
+          child: Text(
+            label,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+          ),
+        ),
+        if (_trailing(iconSize) != null) ...[
+          const SizedBox(width: 6),
+          _trailing(iconSize)!,
+        ],
+      ],
+    ),
     );
 
     return expanded ? SizedBox(width: double.infinity, child: button) : button;

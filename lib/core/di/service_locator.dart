@@ -4,6 +4,7 @@ import 'package:engineering_flow/core/services/firestore_service.dart';
 import 'package:engineering_flow/features/auth/data/data_sources/auth_remote_data_source.dart';
 import 'package:engineering_flow/features/auth/domain/repositories/auth_repo.dart';
 import 'package:engineering_flow/features/auth/domain/use_cases/login_use_case.dart';
+import 'package:engineering_flow/features/auth/domain/use_cases/logout_use_case.dart';
 import 'package:engineering_flow/features/auth/domain/use_cases/password_reset_use_case.dart';
 import 'package:engineering_flow/features/users/data/data_sources/users_remote_data_source.dart';
 import 'package:engineering_flow/features/users/data/repos/users_repo_impl.dart';
@@ -41,15 +42,18 @@ void setUp() {
     UsersRepoImpl(getIt.get<UsersRemoteDataSource>()),
   );
 
-
   getIt.registerSingleton(CreateUserAccountUseCase(getIt.get<UsersRepo>()));
 
   getIt.registerSingleton(GetAllUsersUseCase(getIt.get<UsersRepo>()));
 
-  getIt.registerSingleton(ChangeUserActivateStatusUseCase(getIt.get<UsersRepo>()));
+  getIt.registerSingleton(
+    ChangeUserActivateStatusUseCase(getIt.get<UsersRepo>()),
+  );
 
   getIt.registerSingleton(GetCurrentUserUseCase(getIt.get<UsersRepo>()));
 
   getIt.registerFactory<ProfileCubit>(
-        () => ProfileCubit(getIt<GetCurrentUserUseCase>()),
-  );}
+    () => ProfileCubit(getIt<GetCurrentUserUseCase>()),
+  );
+  getIt.registerSingleton<LogoutUseCase>(LogoutUseCase(getIt.get<AuthRepo>()));
+}

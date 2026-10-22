@@ -1,3 +1,4 @@
+import 'package:engineering_flow/features/auth/domain/use_cases/logout_use_case.dart';
 import 'package:engineering_flow/features/auth/domain/use_cases/password_reset_use_case.dart';
 import 'package:engineering_flow/features/auth/presentation/views/widgets/password_field.dart';
 import 'package:engineering_flow/features/auth/presentation/views/widgets/remember_me_row.dart';
@@ -52,7 +53,8 @@ class _LoginFormCardState extends State<LoginFormCard> {
             BlocProvider(
               create: (context) => AuthCubit(
                   getIt.get<LoginUseCase>(),
-                  getIt.get<PasswordResetUseCase>()
+                  getIt.get<PasswordResetUseCase>(),
+                getIt.get<LogoutUseCase>()
               ),
               child: RememberMeRow(),
             ),
@@ -63,7 +65,8 @@ class _LoginFormCardState extends State<LoginFormCard> {
               create: (context) =>
                   AuthCubit(
                       getIt.get<LoginUseCase>(),
-                      getIt.get<PasswordResetUseCase>()
+                      getIt.get<PasswordResetUseCase>(),
+                    getIt.get<LogoutUseCase>()
                   ),
               child: LoginButton(
                 formKey: _formKey,
