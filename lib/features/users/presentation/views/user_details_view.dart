@@ -15,17 +15,15 @@ class UserDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MainAppBar(title: "User Details"),
-      body: SafeArea(child: BlocProvider(
-        create: (_) =>
-        getIt<ProfileCubit>()
-          ..getCurrentUser(),
-        child: const UserDetailsViewBody(),
-      )),
-      bottomNavigationBar: BlocProvider(
-        create: (context) => AuthCubit(getIt.get(), getIt.get(), getIt.get()),
-        child: UserDetailsActionBar(),
+    return BlocProvider(
+      create: (context) => ProfileCubit(getIt.get())..getCurrentUser(),
+      child: Scaffold(
+        appBar: MainAppBar(title: "User Details"),
+        body: SafeArea(child: const UserDetailsViewBody()),
+        bottomNavigationBar: BlocProvider(
+          create: (context) => AuthCubit(getIt.get(), getIt.get(), getIt.get()),
+          child: UserDetailsActionBar(),
+        ),
       ),
     );
   }

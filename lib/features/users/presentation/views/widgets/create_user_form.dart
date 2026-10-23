@@ -9,7 +9,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/di/service_locator.dart';
 import '../../../../../core/theme/app_colors.dart';
-import '../../../../../core/widgets/app_text_field.dart' show AppTextField;
+import '../../../../../core/widgets/app_text_field.dart' show AppTextField, FieldRequirement;
+import '../../../../../core/widgets/required_label.dart';
 import '../../managers/user_cubit/user_cubit.dart';
 import 'create_user_bloc_builder.dart';
 
@@ -44,7 +45,7 @@ class _CreateUserFormState extends State<CreateUserForm> {
           AppTextField(
             label: 'Full Name',
             hintText: 'Enter full name',
-            isRequired: true,
+            requirement: FieldRequirement.required,
             prefixIcon: Icons.person_outline,
             validator: (value) {
               if (value!.isEmpty) {
@@ -61,7 +62,7 @@ class _CreateUserFormState extends State<CreateUserForm> {
           //email
           AppTextField(
             label: 'Email Address',
-            isRequired: true,
+            requirement: FieldRequirement.required,
             hintText: 'Enter email address',
             prefixIcon: Icons.mail_outline,
             keyboardType: TextInputType.emailAddress,
@@ -83,7 +84,7 @@ class _CreateUserFormState extends State<CreateUserForm> {
           //password
           AppTextField(
             label: 'Initial Password',
-            isRequired: true,
+            requirement: FieldRequirement.required,
             hintText: 'Enter initial password',
             prefixIcon: Icons.lock_outline,
             obscureText: _isPasswordObscured,
@@ -127,7 +128,7 @@ class _CreateUserFormState extends State<CreateUserForm> {
           //job title
           AppTextField(
             label: 'Job Title',
-            isRequired: true,
+            requirement: FieldRequirement.required,
             validator: (value) {
               if (value!.isEmpty) {
                 return 'Job title is required';
@@ -144,12 +145,10 @@ class _CreateUserFormState extends State<CreateUserForm> {
 
           AppTextField(
             label: 'Phone Number',
-            isRequired: false,
-            optionalLabel: '(Optional)',
+            requirement: FieldRequirement.optional,
             hintText: 'Enter phone number',
             prefixIcon: Icons.phone_outlined,
             keyboardType: TextInputType.phone,
-
             onSaved: (value) {
               phoneNumber = value;
             },

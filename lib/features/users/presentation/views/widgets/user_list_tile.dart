@@ -35,7 +35,7 @@ class UserListTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               InitialsAvatar(
-                initials: getFirstTwoCharacters(userEntity.name),
+                initials: getInitials(userEntity.name),
                 backgroundColor: AppColors.background,
                 textColor: AppColors.primary,
                 size: 56,

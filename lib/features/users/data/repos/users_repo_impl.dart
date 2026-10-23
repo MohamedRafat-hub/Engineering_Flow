@@ -189,4 +189,23 @@ class UsersRepoImpl implements UsersRepo {
     }
   }
 
+  @override
+  Future<Either<Failure, void>> updateProfile({
+    required String userId,
+    required Map<String, dynamic> data,
+  }) async {
+    try {
+      await _remoteDataSource.updateProfile(
+        userId: userId,
+        data: data,
+      );
+
+      return right(null);
+    } on FirebaseException catch (e) {
+      final exception = ErrorHandling.handleFirestoreException(e);
+      return left(ServerFailure(exception.message));
+    } catch (e) {
+      return left(ServerFailure(e.toString()));
+    }
+  }
 }

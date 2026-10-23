@@ -8,9 +8,10 @@ import 'profile_avatar_button.dart';
 /// Standard app bar for every top-level screen (Dashboard, Users,
 /// Projects, Profile): eyebrow brand + page title, bell, profile avatar.
 class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const MainAppBar({super.key, required this.title});
+  const MainAppBar({super.key, required this.title , this.automaticallyImplyLeading = false});
 
   final String title;
+  final bool automaticallyImplyLeading;
 
   @override
   Size get preferredSize => const Size.fromHeight(64);
@@ -19,7 +20,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       toolbarHeight: 64,
-      automaticallyImplyLeading: false,
+      automaticallyImplyLeading: automaticallyImplyLeading,
       backgroundColor: AppColors.surface,
       surfaceTintColor: Colors.transparent,
       elevation: 0,

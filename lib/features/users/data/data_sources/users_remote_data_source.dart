@@ -28,6 +28,11 @@ abstract class UsersRemoteDataSource {
       bool isActive,
       Map<String, dynamic> data,
       );
+
+  Future<void> updateProfile({
+    required String userId,
+    required Map<String, dynamic> data,
+  });
 }
 
 class UsersRemoteDataSourceImpl implements UsersRemoteDataSource {
@@ -102,5 +107,17 @@ class UsersRemoteDataSourceImpl implements UsersRemoteDataSource {
   @override
   Future<void> deleteUser({required String id}) {
     throw UnimplementedError('deleteUser has not been implemented yet');
+  }
+
+  @override
+  Future<void> updateProfile({
+    required String userId,
+    required Map<String, dynamic> data,
+  }) {
+    return _databaseService.updateData(
+      userId,
+      data,
+      FirestoreConstants.usersCollection,
+    );
   }
 }

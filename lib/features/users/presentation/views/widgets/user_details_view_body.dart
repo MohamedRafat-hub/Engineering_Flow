@@ -70,7 +70,7 @@ class UserDetailsViewBody extends StatelessWidget {
         return ScrollableCenteredBody(
           children: [
             UserDetailsHeader(
-              initials: getFirstTwoCharacters(user.name),
+              initials: getInitials(user.name),
               name: user.name,
               jobTitle: user.jobTitle,
               roleLabel: role,

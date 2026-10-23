@@ -24,7 +24,7 @@ class UserActivityTile extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          InitialsAvatar(initials: getFirstTwoCharacters(userEntity.name)),
+          InitialsAvatar(initials: getInitials(userEntity.name)),
           const SizedBox(width: 12),
           Expanded(
             child: Column(

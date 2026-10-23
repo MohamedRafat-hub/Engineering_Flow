@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
 import '../theme/app_text_styles.dart';
+import 'required_label.dart';
 
+/// Labeled text input used by every form in the app (auth, Create User,
+/// Edit User, etc.): a [RequiredLabel] above a field with a leading icon.
 class AppTextField extends StatelessWidget {
   const AppTextField({
     super.key,
@@ -12,10 +14,13 @@ class AppTextField extends StatelessWidget {
     this.suffixIcon,
     this.obscureText = false,
     this.keyboardType,
-    this.onSaved,
+    this.requirement = FieldRequirement.required,
+    this.optionalLabel = '(Optional)',
+    this.initialValue,
     this.validator,
-    this.isRequired = false,
-    this.optionalLabel,
+    this.onSaved,
+    this.onChanged,
+    this.controller,
   });
 
   final String label;
@@ -24,42 +29,39 @@ class AppTextField extends StatelessWidget {
   final Widget? suffixIcon;
   final bool obscureText;
   final TextInputType? keyboardType;
-  final Function(String?)? onSaved;
-  final String? Function(String?)? validator;
-  final bool isRequired;
-  final String? optionalLabel;
+  final FieldRequirement requirement;
+
+  /// Text shown inline after the label when [requirement] is
+  /// [FieldRequirement.optional].
+  final String optionalLabel;
+
+  /// Static pre-filled text for a read/edit mockup — no controller needed.
+  /// Ignored when [controller] is provided (Flutter disallows both).
+  final String? initialValue;
+
+  /// Standard [TextFormField] passthroughs. The widget stays presentation
+  /// -only: it carries no validation rules itself, it just forwards
+  /// whatever the caller's own `Form`/logic layer supplies.
+  final FormFieldValidator<String>? validator;
+  final FormFieldSetter<String>? onSaved;
+  final ValueChanged<String>? onChanged;
+  final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        RichText(
-          text: TextSpan(
-            text: label,
-            style: AppTextStyles.fieldLabel,
-            children: [
-              if (isRequired)
-                const TextSpan(
-                  text: ' *',
-                  style: TextStyle(color: AppColors.required),
-                ),
-              if (optionalLabel != null)
-                TextSpan(
-                  text: ' $optionalLabel',
-                  style: AppTextStyles.subtitle.copyWith(fontSize: 12),
-                ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 8),
+        RequiredLabel(label: label, requirement: requirement, optionalLabel: optionalLabel),
         const SizedBox(height: 8),
         TextFormField(
-          validator: validator,
-          maxLines: 1,
-          onSaved: onSaved,
+          controller: controller,
+          initialValue: controller == null ? initialValue : null,
           obscureText: obscureText,
           keyboardType: keyboardType,
+          validator: validator,
+          onSaved: onSaved,
+          onChanged: onChanged,
           style: AppTextStyles.input,
           decoration: InputDecoration(
             hintText: hintText,

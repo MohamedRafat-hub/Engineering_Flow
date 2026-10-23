@@ -1,4 +1,5 @@
 
+import 'package:engineering_flow/core/utils/helper_functions/show_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -6,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/widgets/app_button.dart';
 import '../../../../auth/presentation/cubits/auth_cubit/auth_cubit.dart';
+import '../../managers/profile_cubit/profile_cubit.dart';
 
 class UserDetailsActionBar extends StatelessWidget {
   const UserDetailsActionBar({super.key});
@@ -69,7 +71,24 @@ class UserDetailsActionBar extends StatelessWidget {
                     child: AppButton(
                       label: 'Edit',
                       leadingIcon: Icons.edit_outlined,
-                      onPressed: () {},
+                      onPressed: ()async {
+                        final user = context.read<ProfileCubit>().state.user;
+
+                        if (user == null) return;
+
+                        final updated = await context.push<bool>(
+                          '/edit_user_view',
+                          extra: user,
+                        );
+
+                        if (!context.mounted || updated != true) return;
+
+                        await context.read<ProfileCubit>().getCurrentUser();
+
+                        if (!context.mounted) return;
+
+                        showMessage(context, 'Profile updated Successfully', AppColors.success);
+                      },
                     ),
                   ),
                   const SizedBox(width: 12),

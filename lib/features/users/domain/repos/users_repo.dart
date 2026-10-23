@@ -31,4 +31,9 @@ abstract class UsersRepo {
   );
 
   Future<Either<Failure, UserEntity>> getCurrentUser();
+
+  Future<Either<Failure, void>> updateProfile({
+    required String userId,
+    required Map<String, dynamic> data,
+  });
 }

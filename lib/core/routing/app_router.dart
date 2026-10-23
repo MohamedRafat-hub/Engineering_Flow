@@ -8,10 +8,13 @@ import 'package:engineering_flow/features/auth/presentation/views/reset_email_se
 import 'package:engineering_flow/features/dashboard/presentation/views/dashboard_view.dart';
 import 'package:engineering_flow/features/main_screen.dart';
 import 'package:engineering_flow/features/users/presentation/views/craete_user_view.dart';
+import 'package:engineering_flow/features/users/presentation/views/edit_user_view.dart';
 import 'package:engineering_flow/features/users/presentation/views/users_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
+
+import '../../features/users/domain/entities/user_entity.dart';
 
 class AuthRefreshNotifier extends ChangeNotifier {
   AuthRefreshNotifier() {
@@ -90,6 +93,14 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/main_screen',
       builder: (context, state) => const MainScreen(),
+    ),
+    GoRoute(
+      path: '/edit_user_view',
+      builder: (context, state) {
+        final user = state.extra as UserEntity;
+
+        return EditUserView(user: user);
+      },
     ),
   ],
 );

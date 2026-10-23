@@ -17,6 +17,9 @@ import 'package:engineering_flow/features/users/presentation/managers/profile_cu
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import '../../features/auth/data/repositories/auth_repo_impl.dart';
+import '../../features/users/domain/use_cases/update_profile_use_case.dart';
+import '../../features/users/presentation/managers/edit_profile_cubit/edit_profile_cubit.dart';
+import '../services/internet_connection_service.dart';
 
 final getIt = GetIt.instance;
 
@@ -56,4 +59,19 @@ void setUp() {
     () => ProfileCubit(getIt<GetCurrentUserUseCase>()),
   );
   getIt.registerSingleton<LogoutUseCase>(LogoutUseCase(getIt.get<AuthRepo>()));
+
+  getIt.registerLazySingleton<UpdateProfileUseCase>(
+        () => UpdateProfileUseCase(getIt<UsersRepo>()),
+  );
+
+  getIt.registerLazySingleton<InternetConnectionService>(
+        () => InternetConnectionService(),
+  );
+
+  getIt.registerFactory<EditProfileCubit>(
+        () => EditProfileCubit(
+      getIt<UpdateProfileUseCase>(),
+      getIt<InternetConnectionService>(),
+    ),
+  );
 }
