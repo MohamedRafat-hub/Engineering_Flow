@@ -1,9 +1,28 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:engineering_flow/core/services/database_service.dart';
+import 'package:engineering_flow/core/services/internet_connection_service.dart';
+
+import '../errors/exceptions.dart';
 
 class FireStoreService extends DatabaseService {
-  final FirebaseFirestore _firebaseFireStore =
-      FirebaseFirestore.instance;
+  final FirebaseFirestore _firebaseFireStore;
+  final InternetConnectionService _internetConnectionService;
+
+  FireStoreService(
+      this._internetConnectionService, {
+        FirebaseFirestore? firebaseFirestore,
+      }) : _firebaseFireStore =
+      firebaseFirestore ?? FirebaseFirestore.instance;
+
+  Future<void> _checkInternetConnection() async {
+    final hasInternet =
+    await _internetConnectionService.hasInternetAccess;
+
+    if (!hasInternet) {
+      throw NoInternetException();
+    }
+  }
 
   @override
   Future<void> addData({
@@ -11,15 +30,14 @@ class FireStoreService extends DatabaseService {
     required Map<String, dynamic> data,
     String? uid,
   }) async {
+    await _checkInternetConnection();
+
+    final collection = _firebaseFireStore.collection(path);
+
     if (uid != null) {
-      await _firebaseFireStore
-          .collection(path)
-          .doc(uid)
-          .set(data);
+      await collection.doc(uid).set(data);
     } else {
-      await _firebaseFireStore
-          .collection(path)
-          .add(data);
+      await collection.add(data);
     }
   }
 
@@ -32,7 +50,9 @@ class FireStoreService extends DatabaseService {
 
     if (uid != null) {
       return collection.doc(uid).snapshots().map((snapshot) {
-        if (!snapshot.exists) return <Map<String, dynamic>>[];
+        if (!snapshot.exists) {
+          return <Map<String, dynamic>>[];
+        }
 
         return [
           {
@@ -79,6 +99,8 @@ class FireStoreService extends DatabaseService {
       Map<String, dynamic> data,
       String path,
       ) async {
+    await _checkInternetConnection();
+
     await _firebaseFireStore
         .collection(path)
         .doc(userId)

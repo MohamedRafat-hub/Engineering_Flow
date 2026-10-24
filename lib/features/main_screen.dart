@@ -5,7 +5,6 @@ import 'package:engineering_flow/features/users/domain/use_cases/get_all_users_u
 import 'package:engineering_flow/features/users/presentation/managers/get_users_cubit/get_users_cubit.dart';
 import 'package:engineering_flow/features/users/presentation/views/user_details_view.dart';
 import 'package:engineering_flow/features/users/presentation/views/users_view.dart';
-import 'package:engineering_flow/profile_view.dart';
 import 'package:engineering_flow/projects_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

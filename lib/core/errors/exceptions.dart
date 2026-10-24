@@ -21,3 +21,7 @@ class FirestoreException implements Exception {
 
   const FirestoreException(this.message);
 }
+
+class NoInternetException implements Exception {
+  const NoInternetException();
+}

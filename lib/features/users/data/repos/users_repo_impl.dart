@@ -23,6 +23,8 @@ class UsersRepoImpl implements UsersRepo {
     try {
       await _remoteDataSource.addUser(userData: userData, uid: uid);
       return right(null);
+    } on NoInternetException{
+      return left(InternetConnectionFailure("No internet connection"));
     } on FirebaseException catch (e) {
       final firebaseException = ErrorHandling.handleFirestoreException(e);
       return left(ServerFailure(firebaseException.message));
@@ -42,7 +44,10 @@ class UsersRepoImpl implements UsersRepo {
         password: password,
       );
       return right(user);
-    } on FirebaseAuthException catch (e) {
+    } on NoInternetException {
+      return left(InternetConnectionFailure("No internet connection"));
+    }
+    on FirebaseAuthException catch (e) {
       String message = ErrorHandling.handleAuthException(e).message;
       return left(ServerFailure(message));
     } catch (e) {
@@ -80,7 +85,10 @@ class UsersRepoImpl implements UsersRepo {
         await _remoteDataSource.addUser(userData: userData, uid: uid);
 
         return right(null);
-      } on AuthException catch (e) {
+      }on NoInternetException {
+        return left(InternetConnectionFailure("No internet connection"));
+      }
+      on AuthException catch (e) {
         return left(ServerFailure(e.message));
       } catch (e) {
         if (uid != null) {
@@ -106,16 +114,12 @@ class UsersRepoImpl implements UsersRepo {
     }
   }
 
-
   @override
   Stream<Either<Failure, List<UserEntity>>> getAllUsers() async* {
     try {
       await for (final data in _remoteDataSource.getAllUsers()) {
         final users = data.map((map) {
-          return UserModel.fromMap(
-            map,
-            id: map['id'] as String,
-          ).toEntity();
+          return UserModel.fromMap(map, id: map['id'] as String).toEntity();
         }).toList();
 
         yield right(users);
@@ -130,12 +134,9 @@ class UsersRepoImpl implements UsersRepo {
         stackTrace: stackTrace,
       );
 
-      yield left(
-        ServerFailure('There was an error while fetching users.'),
-      );
+      yield left(ServerFailure('There was an error while fetching users.'));
     }
   }
-
 
   @override
   Future<Either<Failure, void>> changeUserActiveStatus(
@@ -143,10 +144,12 @@ class UsersRepoImpl implements UsersRepo {
     bool isActive,
   ) async {
     try {
-      await _remoteDataSource.changeUserActiveStatus(userId, isActive, {
+      await _remoteDataSource.changeUserActiveStatus(userId, {
         'isActive': isActive,
       });
       return right(null);
+    } on NoInternetException {
+      return left(InternetConnectionFailure("No internet connection"));
     } on FirebaseException catch (e) {
       final String errorMessage = ErrorHandling.handleFirestoreException(
         e,
@@ -156,7 +159,6 @@ class UsersRepoImpl implements UsersRepo {
       return left(ServerFailure("Something went wrong. ${e.toString()}"));
     }
   }
-
 
   @override
   Future<Either<Failure, UserEntity>> getCurrentUser() async {
@@ -195,12 +197,11 @@ class UsersRepoImpl implements UsersRepo {
     required Map<String, dynamic> data,
   }) async {
     try {
-      await _remoteDataSource.updateProfile(
-        userId: userId,
-        data: data,
-      );
+      await _remoteDataSource.updateProfile(userId: userId, data: data);
 
       return right(null);
+    } on NoInternetException catch (e) {
+      return left(InternetConnectionFailure("No internet connection"));
     } on FirebaseException catch (e) {
       final exception = ErrorHandling.handleFirestoreException(e);
       return left(ServerFailure(exception.message));

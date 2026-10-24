@@ -16,3 +16,7 @@ class NetworkFailure extends Failure {
 class ServerFailure extends Failure {
   const ServerFailure(super.message);
 }
+
+class InternetConnectionFailure extends Failure {
+  const InternetConnectionFailure(super.message);
+}

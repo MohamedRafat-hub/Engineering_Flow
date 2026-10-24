@@ -25,7 +25,6 @@ abstract class UsersRemoteDataSource {
 
   Future<void> changeUserActiveStatus(
       String userId,
-      bool isActive,
       Map<String, dynamic> data,
       );
 
@@ -94,7 +93,6 @@ class UsersRemoteDataSourceImpl implements UsersRemoteDataSource {
   @override
   Future<void> changeUserActiveStatus(
       String userId,
-      bool isActive,
       Map<String, dynamic> data,
       ) {
     return _databaseService.updateData(

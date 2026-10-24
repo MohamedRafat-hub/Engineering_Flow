@@ -1,3 +1,4 @@
+
 import 'package:dartz/dartz.dart';
 import 'package:engineering_flow/core/errors/exceptions.dart';
 import 'package:engineering_flow/core/errors/failures.dart';
@@ -5,38 +6,51 @@ import 'package:engineering_flow/features/auth/data/data_sources/auth_remote_dat
 import 'package:engineering_flow/features/auth/domain/entities/auth_entity.dart';
 import 'package:engineering_flow/features/auth/domain/repositories/auth_repo.dart';
 
-class AuthRepoImpl implements AuthRepo{
-
+class AuthRepoImpl implements AuthRepo {
   final AuthRemoteDataSource _authRemoteDataSource;
 
   AuthRepoImpl(this._authRemoteDataSource);
+
   @override
-  Future<Either<Failure, AuthEntity>> login({required String email, required String password})async {
+  Future<Either<Failure, AuthEntity>> login({
+    required String email,
+    required String password,
+  }) async {
     try {
-      AuthEntity userEntity =await  _authRemoteDataSource.login(email: email, password: password);
+      final userEntity = await _authRemoteDataSource.login(
+        email: email,
+        password: password,
+      );
+
       return right(userEntity);
-      
+    } on NoInternetException {
+      return left(
+        InternetConnectionFailure('No internet connection'),
+      );
     } on AuthException catch (e) {
       return left(AuthFailure(e.message));
-    }
-
-    catch (e) {
+    } catch (e) {
       return left(AuthFailure(e.toString()));
     }
   }
 
   @override
-  Future<Either<Failure, void>> passwordReset({required String email})async {
+  Future<Either<Failure, void>> passwordReset({
+    required String email,
+  }) async {
     try {
-      var result = await _authRemoteDataSource.passwordReset(email: email);
-      return right(result);
+      await _authRemoteDataSource.passwordReset(email: email);
+      return right(null);
+    } on NoInternetException {
+      return left(
+        InternetConnectionFailure('No internet connection'),
+      );
     } on AuthException catch (e) {
       return left(AuthFailure(e.message));
-    }catch (e) {
+    } catch (e) {
       return left(AuthFailure(e.toString()));
     }
   }
-
 
   @override
   Future<Either<Failure, void>> logout() async {

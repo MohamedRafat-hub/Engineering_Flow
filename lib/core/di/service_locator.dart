@@ -15,7 +15,6 @@ import 'package:engineering_flow/features/users/domain/use_cases/get_all_users_u
 import 'package:engineering_flow/features/users/domain/use_cases/get_current_user_use_case.dart';
 import 'package:engineering_flow/features/users/presentation/managers/profile_cubit/profile_cubit.dart';
 import 'package:get_it/get_it.dart';
-import 'package:http/http.dart';
 import '../../features/auth/data/repositories/auth_repo_impl.dart';
 import '../../features/users/domain/use_cases/update_profile_use_case.dart';
 import '../../features/users/presentation/managers/edit_profile_cubit/edit_profile_cubit.dart';
@@ -24,7 +23,8 @@ import '../services/internet_connection_service.dart';
 final getIt = GetIt.instance;
 
 void setUp() {
-  getIt.registerSingleton<FirebaseAuthService>(FirebaseAuthService());
+  getIt.registerSingleton<InternetConnectionService>(InternetConnectionService());
+  getIt.registerSingleton<FirebaseAuthService>(FirebaseAuthService(getIt.get<InternetConnectionService>()));
   getIt.registerSingleton<AuthRemoteDataSource>(
     AuthRemoteDataSourceImpl(getIt.get<FirebaseAuthService>()),
   );
@@ -33,7 +33,8 @@ void setUp() {
   );
   getIt.registerSingleton<LoginUseCase>(LoginUseCase(getIt.get<AuthRepo>()));
   getIt.registerSingleton(PasswordResetUseCase(getIt.get<AuthRepo>()));
-  getIt.registerSingleton<DatabaseService>(FireStoreService());
+
+  getIt.registerSingleton<DatabaseService>(FireStoreService(getIt.get<InternetConnectionService>()));
 
   getIt.registerSingleton<UsersRemoteDataSource>(
     UsersRemoteDataSourceImpl(
@@ -64,9 +65,6 @@ void setUp() {
         () => UpdateProfileUseCase(getIt<UsersRepo>()),
   );
 
-  getIt.registerLazySingleton<InternetConnectionService>(
-        () => InternetConnectionService(),
-  );
 
   getIt.registerFactory<EditProfileCubit>(
         () => EditProfileCubit(
